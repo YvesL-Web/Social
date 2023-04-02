@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body{
+font-family: "poppins", sans-serif;
+}
+
+.btn {
+  transition: all 300ms ease;
+}
+.btn:hover{
+  /* opacity: 0.8; */
+}
+.fs-0{
+  font-size: 4rem ;
+}
+.fs-7{
+  font-size: 0.8rem;
+}
+
+.bg-gray{
+  background-color: #f0f2f5;
+}
+
+.nav__btn button:hover{
+  background: #f0f2f5 !important;
+}
+.nav__btn button:hover i{
+  color: #0d6efd !important;
+}
+.nav__btn-active i {
+  color:#0d6efd !important;
+}
+.nav__btn-active{
+  position:relative;
+}
+.nav__btn-active:before{
+content: '';
+position:absolute;
+bottom: -4.5px;
+left: 0;
+transform: translateY(4.5px);
+width: 100%;
+height: 3px;
+border-bottom: 3px solid #0d6efd !important;
+}
+
+/* stories card */
+.story:hover{
+  opacity:0.8;
+}
+
+
+
+.post__comment .accordion-button:after{
+  margin-left: 0 !important;
+  display: none !important;
+}
+.post__comment .accordion-button:hover{
+ background: transparent !important;
+ border-color: transparent !important;
+}
+.post__comment .accordion-button:not(.collapsed){
+ background: transparent !important;
+ box-shadow: none !important;
+}
+
+
+@media(min-width:62em){
+  footer{
+    position: fixed;
+    bottom:0;
+    width: 100%;
+  }
+}

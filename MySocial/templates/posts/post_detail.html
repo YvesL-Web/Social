@@ -1,0 +1,204 @@
+{% extends 'base.html' %} {% block content %}
+<div class="bg-white p-4 rounded shadow m-5">
+  <!--author-->
+  <div class="d-flex justify-content-between">
+    <!--avatar-->
+    <div class="d-flex">
+      <img
+        src="{{post.user.userprofile.profile_img.url}}"
+        alt="avatar"
+        class="rounded-circle me-2"
+        style="width: 38px; height: 38px; object-fit: cover" />
+      <div>
+        <a href="#" class="m-0 fw-bold text-dark text-decoration-none"
+          >{{post.user}}</a
+        >
+        <p class="text-muted fs-7">March 23 at 22:30</p>
+      </div>
+    </div>
+    <!--edit-->
+    <i
+      class="fa fa-ellipsis-h"
+      type="button"
+      data-bs-toggle="dropdown"
+      arial-expanded="false"
+      id="postOption"></i>
+    <!--edit menu-->
+    <ul class="dropdown-menu border-0 shadow" aria-labelledby="postOption">
+      <li class="d-flex align-items-center">
+        <a
+          href="#"
+          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+          Edit Post
+        </a>
+      </li>
+      <li class="d-flex align-items-center">
+        <a
+          href="#"
+          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+          Delete Post
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!--post content-->
+  <div class="mt-3">
+    <!--content-->
+    <div>
+      <p>{{post.caption}}</p>
+      <img src="{{post.image.url}}" alt="post img" class="img-fluid" />
+    </div>
+    <!--likes & comment-->
+    <div class="position-relative mt-3 post__comment">
+      <!--likes-->
+      <div
+        class="d-flex align-items-center position-absolute top-0 start-0"
+        style="height: 50px; z-index: 5">
+        <div class="me-2">
+          <i class="fa fa-thumbs-up text-primary"></i>
+        </div>
+        <p class="m-0 text-mutedt fs-7" id="like_count">{{post.like_count}}</p>
+      </div>
+      <!--comment debut-->
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item border-0">
+          <!--comment collapse-->
+          <h2 class="accordion-header" id="headingOne">
+            <div
+              class="accordion-button collapsed d-flex justify-content-end"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseComment"
+              aria-expanded="true"
+              aria-controls="collapseComment">
+              {% if len_comment >= 2  %}
+              <p class="m-0">{{len_comment}}comments</p>
+              {% else %}
+              <p class="m-0">{{len_comment}} comment</p>
+              {% endif %}
+              
+            </div>
+          </h2>
+          <!--comment & likes bar-->
+          <div class="d-flex justify-content-around">
+            <!--like-->
+            <button
+              class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
+              id="like-button"
+              value="{{post.id}}">
+              <i class="fa fa-thumbs-up me-3"></i>
+              {% comment %}
+              <p class="m-0">
+                <a
+                  href="like-post?post_id={{post.id}}"
+                  class="text-decoration-none text-dark"
+                  id="like-button"
+                  value="{{post.id}}"
+                  >Like</a
+                >
+              </p>
+              {% endcomment %}
+              <p class="m-0">like</p>
+            </button>
+          </div>
+          <!--comment expand-->
+          <div
+            id="collapseComment"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <!--comment-->
+              {% for comment in comments %}
+              <div class="d-flex align-items-center my-1">
+                <!--avatar-->
+                <img
+                  src="{{comment.user.userprofile.profile_img.url}}"
+                  alt="avatar"
+                  class="rounded-circle me-2"
+                  style="width: 38px; height: 38px; object-fit: cover" />
+                <!--comment text-->
+                <div class="p-3 rounded w-100 comment__input">
+                  <!--menu-->
+                  <div class="d-flex justify-content-end">
+                    <i
+                      class="fa fa-ellipsis-h"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"></i>
+
+                    <ul
+                      class="dropdown-menu border-0 shadow"
+                      aria-labelledby="postOption">
+                      <li class="d-flex align-items-center">
+                        <a
+                          href="#"
+                          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                          Edit Comment
+                        </a>
+                      </li>
+                      <li class="d-flex align-items-center">
+                        <a
+                          href="#"
+                          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                          Delete Comment
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <!--text-->
+                  <p class="fw-bold m-0">{{comment.user}}</p>
+                  <p class="text-muted fs-7">{{comment.created_at}}</p>
+                  <p class="m-0 fs-7 bg-gray p-2 rounded-pill">
+                    {{comment.body}}
+                  </p>
+                </div>
+              </div>
+              {% endfor %}
+              
+              <!--create comment-->
+              <form class="d-flex my-1" method='POST'>
+                {% csrf_token %}
+                <!--avatar-->
+                <div>
+                  <img
+                    src="{{user_profile.profile_img.url}}"
+                    alt="avatar"
+                    class="rounded-circle me-2"
+                    style="width: 38px; height: 38px; object-fit: cover" />
+                </div>
+                <!--input-->
+                {% comment %} <input
+                  type="text"
+                  name=""
+                  id=""
+                  class="form-control border-0 rounded-pill bg-gray"
+                  placeholder="Write a comment" /> {% endcomment %}
+                  {{form.body}}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end accordion-->
+    </div>
+  </div>
+</div>
+<script>
+  $(document).on('click','#like-button', function(e){
+    e.preventDefault();
+    $.ajax({
+      type:'POST',
+      url:'{% url 'posts:like' %}',
+      data:{
+        postid: $('#like-button').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        action: 'post'
+      },
+      success: function(json){
+        document.getElementById("like_count").innerHTML = json['result']
+      }
+    });
+  })
+</script>
+{% endblock content %}

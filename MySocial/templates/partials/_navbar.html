@@ -1,0 +1,367 @@
+{% load static %}
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"> Logo </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse container navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="#">Home</a>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal">
+          Create a Post
+        </button>
+      </div>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create a Post</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form
+                action="{% url 'posts:upload' %}"
+                method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label"
+                    >Image:</label
+                  >
+                  <input
+                    name="image"
+                    type="file"
+                    class="form-control"
+                    id="recipient-name" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label"
+                    >Caption:</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="message-text"
+                    name="caption"
+                    rows="5"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if request.user.is_authenticated %}
+      <div class="d-flex ms-auto">
+        <div class="d-flex mt-3">
+          <div class="pe-2">Notifications</div>
+          <div class="px-3">Messages</div>
+        </div>
+
+        <div class="dropdown ps-1">
+          <a
+            class="dropdown-toggle"
+            href="#"
+            role="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <img src="{{user_profile.profile_img.url}}" class="avatar" alt="" />
+          </a>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href="{% url 'userProfile:profile' %}"
+                >Profile</a
+              >
+            </li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'users:logout' %}"
+                >logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="navbar-nav ms-auto">
+        <a
+          class="nav-link"
+          href="{% url 'users:register' %}"
+          tabindex="-1"
+          aria-disabled="true"
+          >Register</a
+        >
+        <a
+          class="nav-link"
+          href="{% url 'users:login' %}"
+          tabindex="-1"
+          aria-disabled="true"
+          >Login</a
+        >
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</nav> -->
+
+<div
+  class="bg-white d-flex align-items-center fixed-top shadow"
+  style="min-height: 56px; z-index: 5">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <!--search-->
+      <div class="col d-flex align-items-center">
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="rounded-circle"
+          width="60px"
+          style="font-size: 3rem"
+          alt="" />
+        <div class="input-group ms-2">
+          <!--mobile-->
+          <span
+            class="input-group-prepend d-lg-none"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            data-bs-auto-close="outside">
+            <div
+              class="input-group-text bg-gray border-0 rounded-circle"
+              style="min-height: 40px">
+              <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            </div>
+          </span>
+
+          <!--desktop-->
+          <span
+            class="input-group-prepend d-none d-lg-block"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            data-bs-auto-close="outside">
+            <div
+              class="input-group-text bg-gray border-0 rounded-pill"
+              style="min-height: 40px; min-width: 230px">
+              <i class="fa-solid fa-magnifying-glass me-2 text-muted"></i>
+              <p class="m-0 fs-7 text-muted">Search</p>
+            </div>
+          </span>
+          <!--searchdropdown-->
+          <ul
+            class="dropdown-menu border-0 shadow p-3 overflow-auto"
+            style="20em; max-height:600px;">
+            <!--search input-->
+            <li>
+              <input
+                type="text"
+                class="rounded-pill border-0 bg-gray dropdown-item"
+                placeholder="Search..."
+                autofocus />
+            </li>
+            <!--search result-->
+            <!--result1-->
+            <li class="my-4">
+              <div
+                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
+                role="alert">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://source.unsplash.com/random/1"
+                    alt="avatar"
+                    class="rounded-circle me-2"
+                    style="width: 35px; object-fit: cover" />
+                  <p class="m-0">lorem Ipsum</p>
+                </div>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+            </li>
+            <!--result2-->
+            <li class="my-4">
+              <div
+                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
+                role="alert">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://source.unsplash.com/random/2"
+                    alt="avatar"
+                    class="rounded-circle me-2"
+                    style="width: 35px; object-fit: cover" />
+                  <p class="m-0">lorem Ipsum</p>
+                </div>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+            </li>
+            <!--result3-->
+            <li class="my-4">
+              <div
+                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
+                role="alert">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://source.unsplash.com/random/3"
+                    alt="avatar"
+                    class="rounded-circle me-2"
+                    style="width: 35px; object-fit: cover" />
+                  <p class="m-0">lorem Ipsum</p>
+                </div>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--nav-->
+      <div class="col d-none d-lg-flex justify-content-center">
+        <!--home-->
+        <div class="mx-4 nav__btn nav__btn-active">
+          <button class="btn px-4">
+            <a href="{% url 'posts:index' %}"><i class="fa-solid fa-house text-muted fs-4"></i></a>
+          </button>
+        </div>
+        <!--messages-->
+        <div class="mx-4 nav__btn">
+          <button type="button" class="btn px-4">
+            <i class="fa-solid fa-message position-relative text-muted fs-4">
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.5rem">
+                1
+                <span class="visually-hidden"></span>
+              </span>
+            </i>
+          </button>
+        </div>
+        <!--friend request-->
+        <div class="mx-4 nav__btn">
+          <button type="button" class="btn px-4">
+            <i class="fa-solid fa-users position-relative text-muted fs-4">
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.5rem">
+                1
+                <span class="visually-hidden"></span>
+              </span>
+            </i>
+          </button>
+        </div>
+      </div>
+      <!--menu-->
+      <div class="col d-flex align-items-center justify-content-end">
+        <!--avatar-->
+        <div class="d-none d-xl-flex align-items-center justify-content-end">
+          <img
+            src="{{user_profile.profile_img.url}}"
+            alt="avatar"
+            class="rounded-circle me-2"
+            style="width: 38px; height: 38px; object-fit: cover" />
+          <p class="m-0">{{user.username}}</p>
+        </div>
+        <!--main menu-->
+        <div
+          class="d-flex align-items-center justify-content-center p-1 mx-2 bg-gray rounded-circle"
+          style="width: 38px; height: 38px; object-fit: cover"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          type="button">
+          <i class="fa-solid fa-caret-down"></i>
+        </div>
+        <!--main menu dropdown-->
+
+        <ul
+          class="dropdown-menu border-0 shadow p-3 overflow-auto"
+          style="width: 23em; max-height: 600px">
+          <li class="dropdown-item p-1 rounded d-flex" type="button">
+            <img
+              src="{{user_profile.profile_img.url}}"
+              alt="avatar"
+              class="rounded-circle me-2"
+              style="width: 45px; height: 45px; object-fit: cover" />
+            <div>
+              <p class="m-0">{{user.username}}</p>
+              <p class="m-0 text-muted">See your profile</p>
+            </div>
+          </li>
+          <li class="my-2 p-1">
+            <a
+              href="{% url 'userProfile:profile' %}"
+              class="text-decoration-none text-dark d-flex align-items-center justify-content-between">
+              <div class="p-2">
+                <i
+                  class="fa-solid fa-sliders text-muted fs-4"
+                  style="width: 48px"></i>
+              </div>
+              <div>
+                <p class="m-0" href="{% url 'userProfile:profile' %}">
+                  Account Settings
+                </p>
+                <span class="fs-7 text-muted"
+                  >Lorem ipsum dolor sit amet consectetur adipisicing elit. Non,
+                  quibusdam.</span
+                >
+              </div>
+            </a>
+          </li>
+          <li class="my-2 p-1">
+            <a
+              href="{% url 'users:logout' %}"
+              class="text-decoration-none text-dark d-flex align-items-center">
+              <div class="p-2">
+                <i
+                  class="fa-solid fa-right-from-bracket text-muted fs-4"
+                  style="width: 48px"></i>
+              </div>
+              <div>
+                <p class="m-0">Log out</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

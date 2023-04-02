@@ -1,0 +1,99 @@
+{% extends 'base.html' %} {% block content %}
+
+<!--breadcrumb-->
+<section class="mt-5">
+  <div class="container bg-light rounded col-md-9">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'posts:index' %}"
+            ><i class="fa-solid fa-house"></i
+          ></a>
+        </li>
+        <li class="breadcrumb-item active">Profile</li>
+        <li class="breadcrumb-item active">Account Settings</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+{% include "partials/_messages.html" %}
+<!--Information-->
+<section class="container bg-light">
+  <form
+    action="{% url 'userProfile:profile' %}"
+    method="POST"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="text-center rounded-circle mb-3">
+      <div class="">
+        <img
+          src="{{user_info.profile_img.url}}"
+          width="300"
+          height="200"
+          class="overflow-hidden rounded img-thumbnail mt-2"
+          alt="..." />
+      </div>
+    </div>
+    <div class="input-group text-center mb-3">
+      <input
+        type="file"
+        class="form-control"
+        name="image"
+        id="inputGroupFile02" />
+      <label class="input-group-text" for="inputGroupFile02">Upload</label>
+    </div>
+
+    <p class="text-center">
+      Email: <span class="text-muted">{{user.email}}</span>
+    </p>
+    <hr />
+
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">Username</span>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="Username"
+        aria-describedby="basic-addon1"
+        value="{{user.username}}"
+        name="username" />
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">Name</span>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="Name"
+        aria-describedby="basic-addon1"
+        value="{{user_info.name}}"
+        name="name" />
+    </div>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text">Bio</span>
+      <textarea
+        class="form-control"
+        aria-label="With textarea"
+        name="bio"
+        rows="5">
+{{user_info.bio}}</textarea
+      >
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">Location</span>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="location"
+        aria-describedby="basic-addon1"
+        name="location"
+        value="{{user_info.location}}" />
+    </div>
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-secondary mb-3" type="submit">Save</button>
+    </div>
+  </form>
+</section>
+
+{% endblock content %}
