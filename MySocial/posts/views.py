@@ -16,14 +16,15 @@ from userProfile.models import UserProfile
 # Create your views here.
 @login_required(login_url='users:login')
 def post(request):
-    user_object = User.objects.get(username=request.user.username)
-    user_profile = UserProfile.objects.get(user=user_object)
+    # user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(user=request.user)
     posts= Post.objects.all()
-    # comment = Comment.objects.filter
+    comment = Comment.objects.select_related('post').all()
+ 
     context = {
         'user_profile': user_profile,
         'posts':posts.order_by('-created_at'),
-        # 'comments': comment.order_by('-created_at')
+        'comments': comment.order_by('-created_at'),
     }
     return render(request,'posts/index.html',context)
 
@@ -45,6 +46,7 @@ def single_post(request, id):
     user_profile = UserProfile.objects.get(user=user_object)
     comment = Comment.objects.filter(post=post).order_by('-created_at')
     len_comment = len(Comment.objects.filter(post=post))
+    # add_comment
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -52,7 +54,8 @@ def single_post(request, id):
             comment.post = post
             comment.user = user_object
             comment.save()
-            return HttpResponseRedirect(reverse('posts:single_post', args=[id]))
+            # return HttpResponseRedirect(reverse('posts:single_post', args=[id]))
+            return redirect('posts:single_post', id)
     else:
         form = CommentForm()
 
@@ -65,6 +68,49 @@ def single_post(request, id):
     }
     return render(request, 'posts/post_detail.html', context)
 
+# delete_post
+def delete_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.user != post.user :
+        messages.info(request,"it's not your post.cmon")
+        return redirect('posts:index')
+    else:
+        post.delete()
+        return redirect('posts:index')
+
+#delete_comment
+@login_required(login_url='users:login')
+def delete_comment(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    post = get_object_or_404(Post, id=comment.post.id)
+    
+    if request.user != comment.user :
+        messages.info(request,"it's not your comment")
+        return redirect('posts:single_post',post.id)
+    else:
+        comment.delete()
+        return redirect('posts:single_post',post.id)
+
+
+# edit_comment
+@login_required(login_url='users:login')
+def edit_comment(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    post = get_object_or_404(Post, id = comment.post.id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment.post = post
+            comment.user = request.user
+            comment.body = form.cleaned_data['body']
+            comment.save()
+            return redirect("posts:single_post",post.id)
+    else:
+        form = CommentForm()
+        return redirect("posts:index")
+    return redirect("posts:single_post",post.id)
+
+# like function
 @login_required(login_url='users:login')
 def like_post(request):
     if request.POST.get('action') == "post":

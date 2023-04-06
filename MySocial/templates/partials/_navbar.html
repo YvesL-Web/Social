@@ -138,125 +138,35 @@
 </nav> -->
 
 <div
-  class="bg-white d-flex align-items-center fixed-top shadow"
+  class="bg-white d-flex align-items-center py-1 fixed-top shadow"
   style="min-height: 56px; z-index: 5">
   <div class="container-fluid">
     <div class="row align-items-center">
-      <!--search-->
-      <div class="col d-flex align-items-center">
+      <!--logo-->
+      <div class="col ms-3" >
         <img
           src="{% static 'images/logo.png' %}"
           class="rounded-circle"
           width="60px"
           style="font-size: 3rem"
           alt="" />
+      </div>
+      <!--search-->
+      <div class="col d-block">       
         <div class="input-group ms-2">
-          <!--mobile-->
-          <span
-            class="input-group-prepend d-lg-none"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            data-bs-auto-close="outside">
-            <div
-              class="input-group-text bg-gray border-0 rounded-circle"
-              style="min-height: 40px">
-              <i class="fa-solid fa-magnifying-glass text-muted"></i>
-            </div>
+          <span class="input-group-text border-0 bg-gray rounded-pill" id="searchBar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" 
+            class="form-control border-0 bg-gray text-muted rounded-pill ms-1" 
+            style="width:30vw"
+            placeholder="Search" 
+            aria-label="Search" 
+            aria-describedby="search-bar">
           </span>
-
-          <!--desktop-->
-          <span
-            class="input-group-prepend d-none d-lg-block"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            data-bs-auto-close="outside">
-            <div
-              class="input-group-text bg-gray border-0 rounded-pill"
-              style="min-height: 40px; min-width: 230px">
-              <i class="fa-solid fa-magnifying-glass me-2 text-muted"></i>
-              <p class="m-0 fs-7 text-muted">Search</p>
-            </div>
-          </span>
-          <!--searchdropdown-->
-          <ul
-            class="dropdown-menu border-0 shadow p-3 overflow-auto"
-            style="20em; max-height:600px;">
-            <!--search input-->
-            <li>
-              <input
-                type="text"
-                class="rounded-pill border-0 bg-gray dropdown-item"
-                placeholder="Search..."
-                autofocus />
-            </li>
-            <!--search result-->
-            <!--result1-->
-            <li class="my-4">
-              <div
-                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
-                role="alert">
-                <div class="d-flex align-items-center">
-                  <img
-                    src="https://source.unsplash.com/random/1"
-                    alt="avatar"
-                    class="rounded-circle me-2"
-                    style="width: 35px; object-fit: cover" />
-                  <p class="m-0">lorem Ipsum</p>
-                </div>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"></button>
-              </div>
-            </li>
-            <!--result2-->
-            <li class="my-4">
-              <div
-                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
-                role="alert">
-                <div class="d-flex align-items-center">
-                  <img
-                    src="https://source.unsplash.com/random/2"
-                    alt="avatar"
-                    class="rounded-circle me-2"
-                    style="width: 35px; object-fit: cover" />
-                  <p class="m-0">lorem Ipsum</p>
-                </div>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"></button>
-              </div>
-            </li>
-            <!--result3-->
-            <li class="my-4">
-              <div
-                class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between"
-                role="alert">
-                <div class="d-flex align-items-center">
-                  <img
-                    src="https://source.unsplash.com/random/3"
-                    alt="avatar"
-                    class="rounded-circle me-2"
-                    style="width: 35px; object-fit: cover" />
-                  <p class="m-0">lorem Ipsum</p>
-                </div>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"></button>
-              </div>
-            </li>
-          </ul>
         </div>
       </div>
       <!--nav-->
-      <div class="col d-none d-lg-flex justify-content-center">
+      {% comment %} <div class="col d-none d-lg-flex justify-content-center">
         <!--home-->
         <div class="mx-4 nav__btn nav__btn-active">
           <button class="btn px-4">
@@ -289,7 +199,7 @@
             </i>
           </button>
         </div>
-      </div>
+      </div> {% endcomment %}
       <!--menu-->
       <div class="col d-flex align-items-center justify-content-end">
         <!--avatar-->

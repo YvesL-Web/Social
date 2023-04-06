@@ -23,7 +23,7 @@
   style="padding-top: 56px; max-width: 680px">
   {% include "partials/_messages.html" %}
   <!--stories card-->
-  <div class="d-flex justify-content-between position-relative mt-5">
+  <div class="d-flex justify-content-between position-relative">
     <!--create story-->
     <div
       class="mx-1 bg-white rounded story"
@@ -228,6 +228,7 @@
   </div>
   <!--posts-->
   {% for post in posts %}
+  
   <div class="bg-white p-4 rounded shadow mt-3">
     <!--author-->
     <div class="d-flex justify-content-between">
@@ -302,7 +303,7 @@
                 data-bs-target="#collapseComment"
                 aria-expanded="true"
                 aria-controls="collapseComment">
-                <p class="m-0">2 comment</p>
+                <p class="m-0"></p>
               </div>
             </h2>
             <!--comment & likes bar-->
@@ -329,11 +330,12 @@
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 <!--comment-->
-                {% for comment in comments %}
+                {% for comment in comments %} 
+                {% if post.id == comment.post.id %}
                 <div class="d-flex align-items-center my-1">
                   <!--avatar-->
                   <img
-                    src="{{comment.user.userprofile.profile_img.url}}"
+                    src="{{comment.post.user.userprofile.profile_img.url}}"
                     alt="avatar"
                     class="rounded-circle me-2"
                     style="width: 38px; height: 38px; object-fit: cover" />
@@ -374,6 +376,7 @@
                     </p>
                   </div>
                 </div>
+                {% endif %} 
                 {% endfor %}
 
                 <!--create comment-->
@@ -402,6 +405,7 @@
       </div>
     </div>
   </div>
+  
   {% endfor %}
 </div>
 <script>

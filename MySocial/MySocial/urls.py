@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('posts.urls')),
     path('users/', include('users.urls')),
     path('userProfile/', include('userProfile.urls')),
+    path('chat/', include('chat.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
     path('__debug__/', include('debug_toolbar.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

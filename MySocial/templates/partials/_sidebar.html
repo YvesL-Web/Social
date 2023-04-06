@@ -1,3 +1,4 @@
+{% comment %}
 <div
   class="d-none d-xxl-block h-100 fixed-top overflow-hidden"
   style="max-width: 360px; width: 100%; z-index: 4">
@@ -10,14 +11,14 @@
         href="#"
         class="text-decoration-none text-dark d-flex align-items-center">
         <div class="p-2">
-            <img
-          src="https://source.unsplash.com/collection/happy-people"
-          alt="avatar"
-          class="rounded-circle me-2"
-          style="width: 38px; height: 38px; object-fit: cover" />
+          <img
+            src="https://source.unsplash.com/collection/happy-people"
+            alt="avatar"
+            class="rounded-circle me-2"
+            style="width: 38px; height: 38px; object-fit: cover" />
         </div>
         <div>
-           <p class="m-0">Lenoir</p> 
+          <p class="m-0">Lenoir</p>
         </div>
       </a>
     </li>
@@ -26,20 +27,140 @@
         href="#"
         class="text-decoration-none text-dark d-flex align-items-center">
         <div class="p-2">
-            <img
-          src="https://source.unsplash.com/collection/happy-people"
-          alt="avatar"
-          class="rounded-circle me-2"
-          style="width: 38px; height: 38px; object-fit: cover" />
+          <img
+            src="https://source.unsplash.com/collection/happy-people"
+            alt="avatar"
+            class="rounded-circle me-2"
+            style="width: 38px; height: 38px; object-fit: cover" />
         </div>
         <div>
-           <p class="m-0">Mark</p> 
+          <p class="m-0">Mark</p>
         </div>
       </a>
     </li>
   </ul>
 </div>
+{% endcomment %}
 
-<div>
-  
+<div class="left container position-sticky" style="height: max-content; top: 5.4rem">
+  <a
+    href=""
+    class="profile d-flex align-items-center rounded bg-white p-2 text-decoration-none  text-dark  "
+    style="width:100%">
+    <div class="profile-photo">
+      <img
+        src="{{user_profile.profile_img.url}}"
+        alt=""
+        class="rounded-circle"
+        style="width: 38px; height: 38px; object-fit: cover" />
+    </div>
+    <div class="handle">
+      <h4>{{user.username}}</h4>
+      <p class="text-muted">@Name</p>
+    </div>
+  </a>
+
+  <div class="sidebar mt-3 bg-white rounded">
+    <a href="{% url 'posts:index' %}" class="menu-item text-decoration-none active">
+      <span >
+        <i class="fa-solid fa-house text-muted fs-5"></i>
+      </span><h3 class="fs-5 ps-2 text-dark">Home</h3>
+    </a>
+    <a href="" class="menu-item text-decoration-none" id="notifications">
+      <span >
+        <i class="fa-solid fa-bell text-muted fs-5">
+          <small class="notification-count">9+</small>
+        </i>
+        </span ><h3 class="fs-5 ps-2 text-dark">Notifications</h3>
+      <!--notification-->
+      <div class="notifications-popup ms-3 d-none ">
+        <div class="d-flex align-items-start mb-4">
+          <div class="profile-photo me-3">
+            <img
+              src="https://source.unsplash.com/collection/happy-people"
+              alt=""
+              class="rounded-circle ms-2"
+              style="width: 38px; height: 38px; object-fit: cover" />
+          </div>
+          <div class="notification-body">
+            <b>Ashley Malika</b> accepted your friend request
+            <small class="text-muted d-block"> 2 days ago</small>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start " >
+          <div class="profile-photo me-3">
+            <img
+              src="https://source.unsplash.com/collection/happy-people/1"
+              alt=""
+              class="rounded-circle ms-2"
+              style="width: 38px; height: 38px; object-fit: cover" />
+          </div>
+          <div class="notification-body">
+            <b>Sarha Walker</b> accepted your friend request
+            <small class="text-muted"> 2 days ago</small>
+          </div>
+        </div>
+        
+      </div>
+    </a>
+    <a
+      href=""
+      class="menu-item text-decoration-none"
+      id="messages-notifications">
+      <span >
+        <i class="fa-solid fa-message text-muted fs-5">
+          <small class="notification-count">6</small>
+        </i >
+      </span>
+      <h3 class="fs-5 ps-2 text-dark">Messages</h3>
+    </a>
+    <a href="" class="menu-item text-decoration-none">
+      <span ><i class="fa-solid fa-users text-muted fs-5"></i></span>
+      <h3 class="fs-5 ps-2 text-dark">Friend Request</h3>
+    </a>
+    <a href="" class="menu-item text-decoration-none">
+      <span ><i class="fa-solid fa-palette text-muted fs-5"></i></span>
+      <h3 class="fs-5 ps-2 text-dark">Theme</h3>
+    </a>
+  </div>
 </div>
+
+<!--home-->
+{% comment %}
+<div>
+  <div class="mx-4 nav__btn nav__btn-active">
+    <button class="btn px-4">
+      <a href="{% url 'posts:index' %}"
+        ><i class="fa-solid fa-house text-muted fs-4"></i
+      ></a>
+    </button>
+  </div>
+  <!--messages-->
+  <div class="mx-4 nav__btn">
+    <button type="button" class="btn px-4">
+      <i class="fa-solid fa-message position-relative text-muted fs-4">
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 0.5rem">
+          1
+          <span class="visually-hidden"></span>
+        </span>
+      </i>
+    </button>
+  </div>
+  <!--friend request-->
+  <div class="mx-4 nav__btn">
+    <button type="button" class="btn px-4">
+      <i class="fa-solid fa-users position-relative text-muted fs-4">
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 0.5rem">
+          1
+          <span class="visually-hidden"></span>
+        </span>
+      </i>
+    </button>
+  </div>
+</div>
+{% endcomment %}
