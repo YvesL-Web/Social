@@ -15,6 +15,18 @@ font-family: "poppins", sans-serif;
   opacity: 0.8;
 }
 
+.category h6{
+  width: 100%;
+  text-align: center;
+  border-bottom:  4px solid #f0f2f5 ;
+  padding-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.category .active{
+  border-color: black;
+}
+
 .fs-0{
   font-size: 4rem ;
 }
@@ -31,6 +43,9 @@ font-family: "poppins", sans-serif;
 }
 .menu-item:hover{
   background: #f0f2f5;
+}
+.messages .message:last-child{
+  margin: 0;
 }
 .nav__btn button:hover{
   background: #f0f2f5 !important;
@@ -55,10 +70,34 @@ height: 3px;
 border-bottom: 3px solid #0d6efd !important;
 }
 
+.liked-by span{
+  margin-left: -0.6rem;
+}
+.liked-by span:first-child{
+  margin: 0;
+}
+
+
 /* stories card */
 .story:hover{
   opacity:0.8;
+  cursor: pointer;
 }
+
+.stories .story::before{
+  content:"";
+  display: block;
+  width: 100%;
+  height: 5rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  position: absolute;
+  bottom: 0;
+
+}
+.story .name{
+  z-index: 2;
+}
+
 .sidebar i{
   color: #f0f2f5;
   margin-left:2rem;

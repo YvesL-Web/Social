@@ -10,7 +10,7 @@ def inbox(request):
     chats = Chat.get_message(user=user)
     active_message = None
     messages = None
-
+    print(user)
     if chats:
         message = chats[0]
         active_message = message['user'].username
@@ -18,11 +18,11 @@ def inbox(request):
         messages.update(is_read=True)
 
         for message in chats:
-            if chats['user'].username == active_message:
-                messages['unread'] = 0
+            if message['user'].username == active_message:
+                message['unread'] = 0
         context ={
             'messages' : messages,
             'active_message' : active_message,
             'chats': chats, 
         }
-        return render (request, 'chat/inbox.html', context)
+        return render (request, 'posts/index.html', context)

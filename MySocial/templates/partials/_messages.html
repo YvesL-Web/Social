@@ -9,12 +9,7 @@
             class="btn-close"
             data-bs-dismiss="alert"
             aria-label="Close"></button>
-            {% comment %}
-            <strong>
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} Error: {% else %}
-            {{ message.tags | title }} {% endif %}
-            </strong>
-            {% endcomment %} {{ message }}
+           {{ message }}
         </div>
 
         <script>

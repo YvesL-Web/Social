@@ -1,0 +1,109 @@
+<div
+  class="right container position-sticky"
+  style="height: max-content; top: 5.4em; bottom: 0">
+  <div class="messages bg-white rounded p-3">
+    <div class="heading d-flex align-items-center justify-content-between mb-2">
+      <h4>Messages</h4>
+      <i class="fa-solid fa-pen-to-square fs-4"></i>
+    </div>
+    <!-- Search bar -->
+    <div
+      class="search-bar d-flex input-group bg-gray rounded-pill mb-3"
+      id="searchbar">
+      <span class="input-group-text border-0 rounded-pill bg-gray"
+        ><i class="fa-brands fa-searchengin fs-4"></i
+      ></span>
+      <input
+        type="text"
+        name=""
+        id=""
+        class="form-control border-0 bg-gray rounded-pill"
+        placeholder="Search messages"
+        id="message-search" />
+    </div>
+    <!-- Message category -->
+    <div class="category d-flex justify-content-between mb-1">
+      <h6 class="active">Primary</h6>
+      <h6>General</h6>
+      <h6 class="message-request text-primary">Requests(5)</h6>
+    </div>
+    <!-- end message category -->
+    <!-- Message -->
+    {% for message in user_messages %}
+    <div class="message d-flex gap-2 mb-1 align-items-start">
+      <div class="profile-photo">
+        <img
+          class="profile-photo rounded-circle border border-2 border-light"
+          style="width: 38px; height: 38px; object-fit: cover"
+          src="{{message.sender.userprofile.profile_img.url}}"
+          alt="" />
+      </div>
+      <div class="message-body">
+        <h5>{{message.sender}}</h5>
+        <p class="text-muted">{{message.message}}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% comment %} {% for userChat in chat_user %}
+    <div class="message d-flex gap-2 mb-1 align-items-start">
+      <div class="profile-photo">
+        <img
+          class="profile-photo rounded-circle border border-2 border-light"
+          style="width: 38px; height: 38px; object-fit: cover"
+          src="{{userChat.user.userprofile.profile_img.url}}"
+          alt="" />
+      </div>
+      <div class="message-body">
+        <h5>{{userChat.user}}</h5>
+        <p class="text-muted"></p>
+      </div>
+    </div>
+    {% endfor %} {% endcomment %}
+    
+    <!-- end of message -->
+  </div>
+
+  <!-- friend request -->
+  <div class="friend-request mt-3">
+    <h4 class="text-muted my-2 ms-2">Requests</h4>
+    <div class="request bg-white rounded mb-3 p-3">
+      <div class="info d-flex gap-3">
+        <div class="profile-photo">
+          <img
+            class="profile-photo rounded-circle border border-2 border-light"
+            style="width: 60px; height: 60px; object-fit: cover"
+            src="https://source.unsplash.com/collection/happy-people/5"
+            alt="" />
+        </div>
+        <div>
+          <h4>Hellen Barkley</h4>
+          <p class="text-muted">10 mutual friend</p>
+        </div>
+      </div>
+      <div class="action ms-5">
+        <button class="btn btn-primary rounded-pill ">Accept</button>
+        <button class="btn btn-danger rounded-pill ">Decline</button>
+      </div>
+    </div>
+    <div class="request bg-white rounded p-3">
+      <div class="info d-flex gap-3">
+        <div class="profile-photo">
+          <img
+            class="profile-photo rounded-circle border border-2 border-light"
+            style="width: 60px; height: 60px; object-fit: cover"
+            src="https://source.unsplash.com/collection/happy-people/12"
+            alt="" />
+        </div>
+        <div>
+          <h4>Katharine Smart</h4>
+          <p class="text-muted">2 mutual friends</p>
+        </div>
+      </div>
+      <div class="action ms-5">
+        <button class="btn btn-primary rounded-pill ">Accept</button>
+        <button class="btn btn-danger rounded-pill ">Decline</button>
+      </div>
+    </div>
+  </div>
+</div>

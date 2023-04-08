@@ -1,23 +1,6 @@
-{% extends 'base.html' %} {% block content %} {% comment %}
-<section class=" ">
-  <div class="container">
-    <h1>Post</h1>
-    {% for post in posts %}
-    <div class="card" style="width: 18rem">
-      <a href="{{post.image.url}}">
-        <img src="{{post.image.url}}" class="card-img-top" alt="..." />
-      </a>
-
-      <div class="card-body">
-        <h5 class="card-title">@{{post.user}}</h5>
-        <p class="card-text"><strong>{{post.user}}</strong> {{post.caption}}</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endcomment %}
+{% extends 'base.html' %}
+{% block content %}
+{% comment %}
 <div
   class="d-flex flex-column justify-content-center w-100 mx-auto mb-3"
   style="padding-top: 56px; max-width: 680px">
@@ -228,7 +211,7 @@
   </div>
   <!--posts-->
   {% for post in posts %}
-  
+
   <div class="bg-white p-4 rounded shadow mt-3">
     <!--author-->
     <div class="d-flex justify-content-between">
@@ -330,8 +313,8 @@
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 <!--comment-->
-                {% for comment in comments %} 
-                {% if post.id == comment.post.id %}
+                {% for comment in comments %} {% if post.id == comment.post.id
+                %}
                 <div class="d-flex align-items-center my-1">
                   <!--avatar-->
                   <img
@@ -376,8 +359,7 @@
                     </p>
                   </div>
                 </div>
-                {% endif %} 
-                {% endfor %}
+                {% endif %} {% endfor %}
 
                 <!--create comment-->
                 <div class="d-flex my-1">
@@ -405,24 +387,265 @@
       </div>
     </div>
   </div>
-  
+
   {% endfor %}
 </div>
-<script>
-  $(document).on('click','#like-button', function(e){
-    e.preventDefault();
-    $.ajax({
-      type:'POST',
-      url:'{% url 'posts:like' %}',
-      data:{
-        postid: $('#like-button').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-        action: 'post'
-      },
-      success: function(json){
-        document.getElementById("like_count").innerHTML = json['result']
-      }
-    });
-  })
-</script>
+{% endcomment %}
+
+<div class="middle">
+  {% include "partials/_messages.html" %}
+  <!-- stories section -->
+  <div class="stories d-flex justify-content-between" style="height: 12rem">
+    <div
+      class="story rounded p-1 mx-2 d-flex flex-column bg-info justify-content-between align-items-center text-white fs-7 position-relative overflow-hidden"
+      style="
+        width: 100%;
+        background: url('https://source.unsplash.com/random/1') no-repeat center
+          center/cover;
+      ">
+      <div>
+        <img
+          class="profile-photo rounded-circle border border-2 border-light"
+          style="width: 38px; height: 38px; object-fit: cover"
+          src="https://source.unsplash.com/collection/happy-people/2"
+          alt="" />
+      </div>
+      <p class="name">John Doe</p>
+    </div>
+    <div
+      class="story rounded p-1 mx-2 d-flex flex-column bg-info justify-content-between align-items-center text-white fs-7 position-relative overflow-hidden"
+      style="
+        width: 100%;
+        background: url('https://source.unsplash.com/random/2') no-repeat center
+          center/cover;
+      ">
+      <div>
+        <img
+          class="profile-photo rounded-circle border border-2 border-light"
+          style="width: 38px; height: 38px; object-fit: cover"
+          src="https://source.unsplash.com/collection/happy-people/3"
+          alt="" />
+      </div>
+      <p class="name">Robin Stark</p>
+    </div>
+    <div
+      class="story rounded p-1 mx-2 d-flex flex-column bg-info justify-content-between align-items-center text-white fs-7 position-relative overflow-hidden"
+      style="
+        width: 100%;
+        background: url('https://source.unsplash.com/random/3') no-repeat center
+          center/cover;
+      ">
+      <div>
+        <img
+          class="profile-photo rounded-circle border border-2 border-light"
+          style="width: 38px; height: 38px; object-fit: cover"
+          src="https://source.unsplash.com/collection/happy-people/1"
+          alt="" />
+      </div>
+      <p class="name">Elza Markess</p>
+    </div>
+    <!-- end stories -->
+  </div>
+  <!--create post section-->
+  <div class="bg-white p-3 mt-3 rounded-pill border shadow">
+    <!--avatar-->
+    <div class="d-flex" type="button">
+      <div class="p-1">
+        <img
+          src="https://source.unsplash.com/collection/happy-people"
+          alt="avatar"
+          class="rounded-circle me-2"
+          style="width: 40px; height: 40px; object-fit: cover" />
+      </div>
+      <input
+        type="text"
+        name=""
+        id=""
+        class="form-control rounded-pill border-0 bg-gray"
+        placeholder="Tell us something, {{user.username}}..."
+        disabled
+        data-bs-toggle="modal"
+        data-bs-target="#postModal" />
+    </div>
+    <!--create post modal-->
+    <div
+      class="modal fade"
+      id="postModal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!--head-->
+          <div class="modal-header align-items-center">
+            <h1
+              class="text-dark text-center w-100 m-0 fs-5"
+              id="postModalLabel">
+              Create Post
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <!--body-->
+          <div class="modal-body">
+            <div class="my-1 p-1">
+              <div class="d-flex flex-column">
+                <!-- image&username-->
+                <div class="d-flex align-items-center">
+                  <!--avatar-->
+                  <div class="p-2">
+                    <img
+                      src="{{user_profile.profile_img.url}}"
+                      alt="avatar"
+                      class="rounded-circle"
+                      style="width: 38px; height: 38px; object-fit: cover" />
+                  </div>
+                  <!--username-->
+                  <div>
+                    <div>
+                      <p class="m-0 fw-bold">{{user.username}}</p>
+                    </div>
+                  </div>
+                </div>
+                <form
+                  action="{% url 'posts:upload' %}"
+                  method="POST"
+                  enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!--text-->
+                  <div>
+                    <textarea
+                      placeholder="What's in your mind, {{user.username}}"
+                      name="caption"
+                      id=""
+                      cols="30"
+                      rows="2"
+                      class="form-control border-0"></textarea>
+                  </div>
+                  <!--uppload image-->
+
+                  <div class="mt-3">
+                    <label for="recipient-name" class="col-form-label"
+                      >Add Image/Video:</label
+                    >
+                    <input
+                      name="image"
+                      type="file"
+                      accept="image/*"
+                      class="form-control"
+                      id="files" />
+                  </div>
+
+                  <!--footer-->
+                  <div class="modal-footer p-0 mt-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                      Post
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- single post section -->
+  {% for post in posts %}
+  <div class="feeds my-4">
+    <div class="feed bg-white rounded m-2 p-2">
+      <div class="head d-flex justify-content-between">
+        <div class="user d-flex gap-2">
+          <div class="profile-photo">
+            <img
+              src="{{post.user.userprofile.profile_img.url}}"
+              class="rounded-circle"
+              style="width: 50px; height: 50px; object-fit: cover"
+              alt="" />
+          </div>
+          <div class="ingo">
+            <h3 class="fs-7">{{post.user}}</h3>
+            <small>{{post.created_at}}</small>
+          </div>
+        </div>
+        {% if request.user != post.user %} {% else %}
+        <div class="dropdown">
+          <span
+            class="edit "
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-ellipsis"></i>
+          </span>
+          <ul class="dropdown-menu rounded ">
+            <li><a class="dropdown-item " href="#"><i class="fa-solid fa-pen-to-square text-info"></i> Edit</a></li>
+            <li><a class="dropdown-item " href="{% url 'posts:delete_post' post.id %}"><i class="fa-solid fa-trash text-danger"></i> Delete</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+      <div class="photo rounded overflow-hidden my-1 mx-0">
+        <img
+          src="{{post.image.url}}"
+          style="height: 700px; width: 1200px; object-fit: cover"
+          alt="" />
+      </div>
+      <!-- icon -->
+      <div
+        class="action-button d-flex justify-content-between align-items-center fs-4 m-2">
+        <div class="interaction-button">
+          <span>
+            {% if post.likes.user == request.user  %}
+            <i class="fa-regular fa-heart  text-danger"></i>
+            {% else %}
+            <i class="fa-regular fa-heart"></i>
+            {% endif %}
+          </span>
+          <span><i class="fa-brands fa-rocketchat"></i></span>
+        </div>
+        <div class="bookmark">
+          <span><i class="fa-regular fa-bookmark"></i></span>
+        </div>
+      </div>
+      <!-- person who like the post -->
+      <div class="liked-by d-flex align-items-center">
+        <span
+          class="d-block overflow-hidden border border-2 border-light rounded-circle"
+          style="width: 38px; height: 38px; object-fit: cover">
+          <img
+            src="https://source.unsplash.com/collection/happy-people/1"
+            alt="" />
+        </span>
+
+        <span
+          class="d-block overflow-hidden border border-2 border-light rounded-circle"
+          style="width: 38px; height: 38px; object-fit: cover">
+          <img
+            src="https://source.unsplash.com/collection/happy-people/2"
+            alt="" />
+        </span>
+
+        <p class="mt-3 ms-1">
+          liked by {{post.like_count}} user
+        </p>
+      </div>
+      <div class="cpation">
+        <p>
+          <b>@{{post.user}}</b> <span class="fs-5">{{post.caption}}</span>
+        </p>
+      </div>
+      <div>
+        <a
+          href="{% url 'posts:single_post' post.id %}"
+          class="text-muted text-decoration-none text-decoration-underline"
+          ><span class="text-dark text-muted">View all Comments</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock content %}
