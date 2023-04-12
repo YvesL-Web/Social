@@ -1,0 +1,166 @@
+{% extends 'chat/base_chat.html' %} {% block content %}
+<div class="container my-2 mb-3 mx-auto bg-white rounded p-0">
+  <div class="row g-0">
+    <div class="col-md-4 border-end">
+      <!--profile image-->
+      <div class="settings-tray mx-2 my-2">
+        <img
+          class="profile-image rounded-circle"
+          src="{{user.userprofile.profile_img.url}}"
+          style="width: 50px; height: 50px; object-fit: cover"
+          alt="Profile img" />
+        <span class="float-end mt-3">
+          <i class="material-icons">cached</i>
+          <i class="material-icons">message</i>
+          <i class="material-icons">menu</i>
+        </span>
+      </div>
+      <!--search box-->
+      <div class="search-box mx-2 my-2">
+        <div
+          class="search-bar d-flex input-group bg-gray rounded-pill mb-3"
+          id="searchbar">
+          <span class="input-group-text border-0 rounded-pill bg-gray">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            name=""
+            id=""
+            class="form-control border-0 me-2 text-muted bg-gray rounded-pill"
+            placeholder="Search messages"
+            id="message-search" />
+        </div>
+      </div>
+      <!--friend-->
+      {% for message in messages %}
+      <div
+        class="friend-drawer friend-drawer--onhover bg-white rounded m-2 p-2">
+        <a
+          href="{% url 'chat:single_chat' message.user.username %}"
+          class="text-decoration-none text-dark">
+          <div class="d-flex align-baseline">
+            <img
+              class="profile-image rounded-circle"
+              src="{{message.user.userprofile.profile_img.url}}"
+              style="width: 50px; height: 50px; object-fit: cover"
+              alt="" />
+
+            <div class="text ms-2" style="width: 70%">
+              <h6 class="mb-0 mt-1">{{message.user.username}}</h6>
+              <p class="text-muted m-0">{{message.last}}</p>
+            </div>
+            <span class="time text-muted small">13:21</span>
+          </div>
+        </a>
+      </div>
+      <hr class="my-2 mx-auto" style="width: 70%" />
+      {% endfor %}
+    </div>
+    <!--conversation-->
+    <div class="col-md-8 d-flex flex-column">
+      <div class="settings-tray mx-2 my-2">
+        <div
+          class="friend-drawer g-0 friend-drawer--grey d-flex align-baseline rounded">
+          <img
+            class="profile-image rounded-circle"
+            {% comment %} src="https://source.unsplash.com/collection/10" {% endcomment %}
+            src="https://source.unsplash.com/collection/10"
+            style="width: 50px; height: 50px; object-fit: cover"
+            alt="" />
+          <div class="text ms-2">
+            <h6 class="mb-0 mt-1">{{active_chats}}</h6>
+            <p class="text-muted m-0">
+              Layin' down the law since like before Christ...
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--chat panel-->
+      <div class="chat-panel">
+        {% for chat in chats %} 
+        {% if request.user == chat.sender %}
+        <div class=" send row g-0">
+          <div class="col-md-3 offset-md-9">
+            <div class="chat-bubble right-bubble">{{chat.message}}</div>
+            <span class="time ms-4 text-muted small">{{chat.date}}</span>
+          </div>
+        </div>
+        {% else %}
+        <div class=" receive row g-0">
+          <div class="col-md-3">
+            <div class="chat-bubble left-bubble">{{chat.message}}</div>
+            <span class="time ms-4 text-muted small">{{chat.date}}</span>
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+      <!--input message-->
+      <div class="row mt-5">
+        <div class="col-12">
+          <div class="chat-box-tray mx-2 mt-5">
+            <div class="rounded-pill mb-3">
+              <form
+                action=""
+                method="POST"
+                id="chat-form"
+                class="input-group rounded-pill bg-gray form-control">
+                {% csrf_token %}
+                <!-- the message body -->
+                <input
+                  type="text"
+                  id="message"
+                  name="message"
+                  class="form-control border-0 bg-gray rounded-pill"
+                  placeholder="write your message" />
+                <!-- the person we're sending the message -->
+                <input
+                  type="hidden"
+                  id="to_user"
+                  name="to_user"
+                  value="{{active_chats}}"
+                  class="form-control border-0 bg-gray rounded-pill" />
+
+                <button
+                  class="ms-1 border-0 btn btn-outline-primary rounded-pill"
+                  type="submit"
+                  id="button-addon2">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).on('submit', '#chat-form', function(e){
+    e.preventDefault();
+    let _message = $("#message").val();
+    let _to_user = $("#to_user").val();
+    $.ajax({
+      type:'POST',
+      url:'{% url 'chat:send_message' %}',
+      data:{
+        message:_message,
+        to_user: _to_user,
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(success){
+        console.log(success)
+        let _html =
+          '<div class="row g-0">\
+              <div class="col-md-3 offset-md-9">\
+                <div class="chat-bubble right-bubble">'+ _message +'</div>\
+              </div>\
+            </div>\
+        '
+        $(".chat-panel").append(_html)
+      }
+    });
+    document.getElementById("message").value=""
+  });
+</script>
+{% endblock content %}

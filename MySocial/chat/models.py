@@ -11,7 +11,7 @@ class Chat(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
-    def send_message(from_user, to_user, message):
+    def sender_message(from_user, to_user, message):
         sender_message = Chat(
            user = from_user,
            sender = from_user,
@@ -22,9 +22,9 @@ class Chat(models.Model):
         sender_message.save()
 
         receiver_message = Chat(
-           user = from_user,
+           user = to_user,
            sender = from_user,
-           receiver= to_user,
+           receiver= from_user,
            message = message,
            is_read = True   
         )
@@ -39,6 +39,6 @@ class Chat(models.Model):
             users.append({
                 'user':User.objects.get(pk=message['receiver']),
                 'last': message['last'],
-                'unread': Chat.objects.filter(user=user, receiver__pk=message['receiver'], is_read=False)
+                'unread': Chat.objects.filter(user=user, receiver__pk=message['receiver'], is_read=False).count()
             })
         return users

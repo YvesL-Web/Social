@@ -35,7 +35,7 @@ def post(request):
         for message in chat_user:
             if message['user'].username == active_message:
                 message['unread'] = 0
-    print(chat_user)
+    # print(chat_user)
     context = {
         # post
         'posts':posts.order_by('-created_at'),
