@@ -238,7 +238,7 @@
           </li>
           <li class="my-2 p-1">
             <a
-              href="{% url 'userProfile:profile' %}"
+              href="{% url 'userProfile:profile_view' request.user.id %}"
               class="text-decoration-none text-dark d-flex align-items-center justify-content-between">
               <div class="p-2">
                 <i
@@ -246,7 +246,7 @@
                   style="width: 48px"></i>
               </div>
               <div>
-                <p class="m-0" href="{% url 'userProfile:profile' %}">
+                <p class="m-0" href="">
                   Account Settings
                 </p>
                 <span class="fs-7 text-muted"

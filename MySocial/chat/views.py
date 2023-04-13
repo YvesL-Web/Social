@@ -79,3 +79,12 @@ def send_message(request):
         Chat.sender_message(from_user, to_user, message)
         success = 'Message Sent'
         return HttpResponse(success)
+    
+
+def index2 (request):
+    context = {}
+    return render(request, 'chat/index2.html', context)
+
+def detail(request, pk):
+    context={}
+    return render(request,"chat/single_chat2.html",context)

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
@@ -36,7 +36,7 @@ def edit_profile(request):
             user_profile.location=location
             user_profile.save()
             messages.success(request,"Profile updated.")
-            return redirect('userProfile:profile')
+            return redirect('userProfile:profile_view',user_profile.id)
         
     context = {
        'user_info': user_profile 
@@ -44,5 +44,30 @@ def edit_profile(request):
 
     return render (request,'userProfile/profile.html',context)
 
-def profile(request, id):
-    pass
+@login_required(login_url='users:login')
+def profile_view(request,*args, **kwargs):
+    
+    context = {}
+    user_id = kwargs.get("user_id")
+    try:
+        userprofile = UserProfile.objects.get(pk=user_id)
+    except UserProfile.DoesNotExist:
+        return HttpResponse("That user doesn't exist.")
+    if userprofile:
+        context['id'] = userprofile.id
+        context['username'] = userprofile.user.username
+        context['email'] = userprofile.user.email
+        context['profile_img'] = userprofile.profile_img.url
+        
+        # Define state template
+        is_self = True
+        is_friend = False
+        auth_user = request.user
+        if auth_user.id != userprofile.id :
+            is_self = False
+        elif not auth_user.is_authenticated:
+            is_self = False
+        context['is_self'] = is_self
+        context['is_friend'] = is_friend
+
+        return render(request, "userProfile/userprofile.html", context)
