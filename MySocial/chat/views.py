@@ -30,6 +30,7 @@ def inbox(request):
 
 @login_required(login_url='users:login') 
 def index(request):
+    context={}
     user = request.user
     messages = Chat.get_message(user=user)
     active_chat = None
@@ -80,11 +81,3 @@ def send_message(request):
         success = 'Message Sent'
         return HttpResponse(success)
     
-
-def index2 (request):
-    context = {}
-    return render(request, 'chat/index2.html', context)
-
-def detail(request, pk):
-    context={}
-    return render(request,"chat/single_chat2.html",context)

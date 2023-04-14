@@ -143,7 +143,7 @@
   <div class="container-fluid">
     <div class="row align-items-center">
       <!--logo-->
-      <div class="col ms-3" >
+      <div class="col ms-3">
         <img
           src="{% static 'images/logo.png' %}"
           class="rounded-circle"
@@ -152,25 +152,34 @@
           alt="" />
       </div>
       <!--search-->
-      <div class="col d-block">       
+      <div class="col d-block">
         <div class="input-group ms-2">
-          <span class="input-group-text border-0 bg-gray rounded-pill" id="searchBar">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" 
-            class="form-control border-0 bg-gray text-muted rounded-pill ms-1" 
-            style="width:30vw"
-            placeholder="Search" 
-            aria-label="Search" 
-            aria-describedby="search-bar">
-          </span>
+          <form action="" onsubmit="return executeQuery();" class="">
+            <span
+              class="input-group-text border-0 bg-gray rounded-pill"
+              id="searchBar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="search_profile"
+                class="form-control border-0 bg-gray text-muted rounded-pill ms-1"
+                style="width: 30vw"
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-bar" />
+            </span>
+          </form>
         </div>
       </div>
       <!--nav-->
-      {% comment %} <div class="col d-none d-lg-flex justify-content-center">
+      {% comment %}
+      <div class="col d-none d-lg-flex justify-content-center">
         <!--home-->
         <div class="mx-4 nav__btn nav__btn-active">
           <button class="btn px-4">
-            <a href="{% url 'posts:index' %}"><i class="fa-solid fa-house text-muted fs-4"></i></a>
+            <a href="{% url 'posts:index' %}"
+              ><i class="fa-solid fa-house text-muted fs-4"></i
+            ></a>
           </button>
         </div>
         <!--messages-->
@@ -199,7 +208,8 @@
             </i>
           </button>
         </div>
-      </div> {% endcomment %}
+      </div>
+      {% endcomment %}
       <!--menu-->
       <div class="col d-flex align-items-center justify-content-end">
         <!--avatar-->
@@ -246,9 +256,7 @@
                   style="width: 48px"></i>
               </div>
               <div>
-                <p class="m-0" href="">
-                  Account Settings
-                </p>
+                <p class="m-0" href="">Account Settings</p>
                 <span class="fs-7 text-muted"
                   >Lorem ipsum dolor sit amet consectetur adipisicing elit. Non,
                   quibusdam.</span
@@ -275,3 +283,11 @@
     </div>
   </div>
 </div>
+
+<script>
+  function executeQuery() {
+    var query = document.getElementById("search_profile").value;
+    window.location.replace("{% url 'userProfile:search' %}?q=" + query);
+    return false;
+  }
+</script>

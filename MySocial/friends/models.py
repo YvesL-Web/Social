@@ -53,10 +53,10 @@ class FriendRequest(models.Model):
         receiver_friend_list = FriendsList.objects.get(user=self.receiver)
         if receiver_friend_list:
             receiver_friend_list.add_friend(self.sender)
-            sender_friend_list = FriendsList.objects.get(User=self.sender)
+            sender_friend_list = FriendsList.objects.get(user=self.sender)
             if sender_friend_list:
                 sender_friend_list.add_friend(self.receiver)
-                self.is_active =True
+                self.is_active =False
                 self.save()
 
     def decline(self):
@@ -69,7 +69,7 @@ class FriendRequest(models.Model):
         '''
         Cancel a friend request
         It's 'cancelled' by setting the 'is_active' field to Fasle
-        this is only diffetrent with respect to 'declining' through the notification that is generated.
+        this is only different with respect to 'declining' through the notification that is generated.
         '''
         self.is_active = False
         self.save()
