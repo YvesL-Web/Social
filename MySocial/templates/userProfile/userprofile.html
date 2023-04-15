@@ -1,17 +1,16 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 
 <div class="container-fluid">
   {% include "partials/_messages.html" %}
-  <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
+  <div
+    class="d-flex flex-row justify-content-center flex-wrap align-items-start">
     <div class="card profile-card m-2">
       <div class="card-body">
         <div class="d-flex flex-column justify-content-center p-4">
           <div class="mx-auto mb-4">
             <img
               class="d-block border border-dark rounded-circle img-fluid mx-auto"
-              style="height:250px; width:250px; object-fit: cover;"
+              style="height: 250px; width: 250px; object-fit: cover"
               alt="profile image"
               id="id_profile_image"
               src="{{profile_img}}" />
@@ -29,9 +28,11 @@
 
           <!-- If Auth user is viewing their own profile -->
           {% if is_self %}
-          <a class="mt-4 btn btn-primary" href="{% url 'userProfile:profile' %}">Update</a>
+          <a class="mt-4 btn btn-primary" href="{% url 'userProfile:profile' %}"
+            >Update</a
+          >
           <div class="d-flex flex-column mt-4">
-            <a class="m-auto text-decoration-none " href="#">Change password</a>
+            <a class="m-auto text-decoration-none" href="#">Change password</a>
           </div>
           {% endif %}
         </div>
@@ -50,15 +51,15 @@
           <span
             id="id_cancel_{{id}}"
             class="decline-friend-request material-icons p-1"
-            onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'
-            >cancel</span
-          >
+            onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'>
+            cancel
+          </span>
           <span
             id="id_confirm_{{id}}"
             class="confirm-friend-request material-icons p-1"
-            onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'
-            >check</span
-          >
+            onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'>
+            check
+          </span>
         </div>
       </div>
       {% endif %}
@@ -77,13 +78,14 @@
         <!-- No requests have been sent -->
         {% if request_sent == -1 %}
         <div class="d-flex flex-column align-items-center pt-4">
-          <button class="btn btn-primary" id="id_send_friend_request_btn" type="submit">
+          <button
+            class="btn btn-primary"
+            id="id_send_friend_request_btn"
+            type="submit">
             Send Friend Request
           </button>
         </div>
-        {% endif %} 
-        {% endif %} 
-        {% if is_friend %}
+        {% endif %} {% endif %} {% if is_friend %}
         <div class="dropdown pt-4 m-auto">
           <button
             class="btn btn-secondary dropdown-toggle friends-btn"
@@ -111,7 +113,9 @@
           <a href="#" class="text-decoration-none">
             <div
               class="d-flex flex-row align-items-center justify-content-center icon-container">
-              <span > <i class="fa-solid fa-address-book person-add-icon me-2"></i></span>
+              <span>
+                <i class="fa-solid fa-address-book person-add-icon me-2"></i
+              ></span>
               <span class="friend-text">Friends ({{friends|length}})</span>
             </div>
           </a>
@@ -126,17 +130,15 @@
           <a href="#" class="text-decoration-none text-dark">
             <div
               class="d-flex flex-row align-items-center justify-content-center icon-container">
-                <span >
-                    <i class="fa-solid fa-user-plus me-2 person-add-icon"></i>
-                </span>
-                <span> Friend Requests ({{friend_requests|length}})</span>
+              <span>
+                <i class="fa-solid fa-user-plus me-2 person-add-icon"></i>
+              </span>
+              <span> Friend Requests ({{friend_requests|length}})</span>
             </div>
           </a>
         </div>
       </div>
-      {% endif %} 
-
-      {% if is_friend %}
+      {% endif %} {% if is_friend %}
       <div
         class="d-flex flex-row align-items-center btn btn-primary m-2 px-4"
         onclick="createOrReturnPrivateChat('{{id}}')">
@@ -146,70 +148,71 @@
       {% endif %}
     </div>
     {% endif %}
-   
   </div>
 </div>
 
 <script type="text/javascript">
+  // called from base_js.html
+  //preloadImage("{{profile_image|safe}}", 'id_profile_image')
 
-	// called from base_js.html
-	//preloadImage("{{profile_image|safe}}", 'id_profile_image')
+  function onFriendRequestSent() {
+    location.reload();
+  }
 
-	function onFriendRequestSent(){
-		location.reload();
-	}
+  function onFriendRequestCancelled() {
+    location.reload();
+  }
 
-	function onFriendRequestCancelled(){
-		location.reload();
-	}
+  function onFriendRemoved() {
+    location.reload();
+  }
 
-	function onFriendRemoved(){
-		location.reload();
-	}
+  function onFriendRequestAccepted() {
+    location.reload();
+  }
 
-	function onFriendRequestAccepted(){
-		location.reload();
-	}
+  function onFriendRequestDeclined() {
+    location.reload();
+  }
 
-	function onFriendRequestDeclined(){
-		location.reload();
-	}
+  var sendFriendRequestBtn = document.getElementById(
+    "id_send_friend_request_btn"
+  );
+  if (sendFriendRequestBtn != null) {
+    sendFriendRequestBtn.addEventListener("click", function () {
+      sendFriendRequest("{{id}}", onFriendRequestSent);
+    });
+  }
 
+  var cancelFriendRequestBtn = document.getElementById(
+    "id_cancel_friend_request_btn"
+  );
+  if (cancelFriendRequestBtn != null) {
+    cancelFriendRequestBtn.addEventListener("click", function () {
+      //cancelFriendRequest("{{id}}", onFriendRequestCancelled)
+    });
+  }
 
-	var sendFriendRequestBtn = document.getElementById("id_send_friend_request_btn")
-	if (sendFriendRequestBtn != null){
-		sendFriendRequestBtn.addEventListener("click", function(){
-			sendFriendRequest("{{id}}", onFriendRequestSent)
-		})
-	}
+  var removeFriendBtn = document.getElementById("id_unfriend_btn");
+  if (removeFriendBtn != null) {
+    removeFriendBtn.addEventListener("click", function () {
+      //removeFriend("{{id}}", onFriendRemoved)
+    });
+  }
 
-	var cancelFriendRequestBtn = document.getElementById("id_cancel_friend_request_btn")
-	if(cancelFriendRequestBtn != null){
-		cancelFriendRequestBtn.addEventListener("click", function(){
-			//cancelFriendRequest("{{id}}", onFriendRequestCancelled)
-		})
-	}
+  function triggerAcceptFriendRequest(friend_request_id) {
+    acceptFriendRequest(friend_request_id, onFriendRequestAccepted);
+  }
 
-	var removeFriendBtn = document.getElementById("id_unfriend_btn")
-	if (removeFriendBtn != null){
-		removeFriendBtn.addEventListener("click", function(){
-			//removeFriend("{{id}}", onFriendRemoved)
-		})
-	}
-
-	function triggerAcceptFriendRequest(friend_request_id){
-		//acceptFriendRequest(friend_request_id, onFriendRequestAccepted)
-	}
-
-	function triggerDeclineFriendRequest(friend_request_id){
-		//declineFriendRequest(friend_request_id, onFriendRequestDeclined)
-	}
-	
+  function triggerDeclineFriendRequest(friend_request_id) {
+    //declineFriendRequest(friend_request_id, onFriendRequestDeclined)
+  }
 </script>
+
 {% include 'friends/scripts/send_friend_request.html' %} 
-{#% include 'snippets/accept_friend_request.html' %#} 
-{#% include 'snippets/decline_friend_request.html' %#} 
-{#% include 'snippets/cancel_friend_request.html' %#}
-{#% include 'snippets/remove_friend.html' %#} 
-{#% include 'chat/create_or_return_private_chat.html' %#}
+{% include 'friends/scripts/accept_friend_request.html' %} 
+{#% include'snippets/decline_friend_request.html' %#} 
+{#% include'snippets/cancel_friend_request.html' %#}
+{#% include'snippets/remove_friend.html' %#} 
+{#% include'chat/create_or_return_private_chat.html' %#}
 {% endblock content %}

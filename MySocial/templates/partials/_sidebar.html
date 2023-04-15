@@ -42,11 +42,13 @@
 </div>
 {% endcomment %}
 
-<div class="left container position-sticky" style="height: max-content; top: 5.4rem">
+<div
+  class="left container position-sticky"
+  style="height: max-content; top: 5.4rem">
   <a
     href=""
-    class="profile d-flex align-items-center rounded bg-white p-2 text-decoration-none  text-dark  "
-    style="width:100%">
+    class="profile d-flex align-items-center rounded bg-white p-2 text-decoration-none text-dark"
+    style="width: 100%">
     <div class="profile-photo">
       <img
         src="{{user.userprofile.profile_img.url}}"
@@ -61,19 +63,23 @@
   </a>
 
   <div class="sidebar mt-3 bg-white rounded">
-    <a href="{% url 'posts:index' %}" class="menu-item text-decoration-none active">
-      <span >
+    <a
+      href="{% url 'posts:index' %}"
+      class="menu-item text-decoration-none active">
+      <span>
         <i class="fa-solid fa-house text-muted fs-5"></i>
-      </span><h3 class="fs-5 ps-2 text-dark">Home</h3>
+      </span>
+      <h3 class="fs-5 ps-2 text-dark">Home</h3>
     </a>
     <a href="" class="menu-item text-decoration-none" id="notifications">
-      <span >
+      <span>
         <i class="fa-solid fa-bell text-muted fs-5">
           <small class="notification-count">9+</small>
         </i>
-        </span ><h3 class="fs-5 ps-2 text-dark">Notifications</h3>
+      </span>
+      <h3 class="fs-5 ps-2 text-dark">Notifications</h3>
       <!--notification-->
-      <div class="notifications-popup ms-3 d-none ">
+      <div class="notifications-popup ms-3 d-none">
         <div class="d-flex align-items-start mb-4">
           <div class="profile-photo me-3">
             <img
@@ -88,7 +94,7 @@
           </div>
         </div>
 
-        <div class="d-flex align-items-start " >
+        <div class="d-flex align-items-start">
           <div class="profile-photo me-3">
             <img
               src="https://source.unsplash.com/collection/happy-people/1"
@@ -101,26 +107,31 @@
             <small class="text-muted"> 2 days ago</small>
           </div>
         </div>
-        
       </div>
     </a>
     <a
       href=" {% url 'chat:index' %}"
       class="menu-item text-decoration-none"
       id="messages-notifications">
-      <span >
+      <span>
         <i class="fa-solid fa-message text-muted fs-5">
           <small class="notification-count">6</small>
-        </i >
+        </i>
       </span>
       <h3 class="fs-5 ps-2 text-dark">Messages</h3>
     </a>
-    <a href="" class="menu-item text-decoration-none">
-      <span ><i class="fa-solid fa-users text-muted fs-5"></i></span>
+    <a
+      href="{% url 'friends:show-friend-requests' request.user.id %}"
+      class="menu-item text-decoration-none">
+      <span>
+        <i class="fa-solid fa-users text-muted fs-5">
+          <small class="notification-count">{{friend_requests|length}}</small>
+        </i>
+      </span>
       <h3 class="fs-5 ps-2 text-dark">Friend Request</h3>
     </a>
     <a href="" class="menu-item text-decoration-none">
-      <span ><i class="fa-solid fa-palette text-muted fs-5"></i></span>
+      <span><i class="fa-solid fa-palette text-muted fs-5"></i></span>
       <h3 class="fs-5 ps-2 text-dark">Theme</h3>
     </a>
   </div>

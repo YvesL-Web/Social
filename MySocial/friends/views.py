@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
 
@@ -9,7 +9,20 @@ from friends.models import FriendRequest
 # Create your views here.
 
 @login_required(login_url='users:login')
-def send_friend_request(request, *args, **kwargs):
+def show_friend_requests_view(request, *args, **kwargs):
+    context = {}
+    user = request.user
+    user_id = kwargs.get("user_id")
+    user_object = User.objects.get(pk=user_id)
+    if user_object == user:
+        friend_requests = FriendRequest.objects.filter(receiver= user_object, is_active = True)
+        context['friend_requests'] = friend_requests
+    else:
+        return HttpResponse("You can't view another users friend requests.")
+    return render(request, "friends/show_friend_requests.html", context)
+
+@login_required(login_url='users:login')
+def send_friend_request_view(request, *args, **kwargs):
     user = request.user
     payload = {}
     if request.method == "POST":
@@ -45,4 +58,34 @@ def send_friend_request(request, *args, **kwargs):
             payload['response'] = "Unable to send a friend request"
     else:
         payload['response'] = " You must be authenticated to send a friend request.!"
-    return HttpResponse(json.dumps(payload), content_type="application/json")
+    # return HttpResponse(json.dumps(payload), content_type="application/json")
+    return JsonResponse(payload)
+
+
+@login_required(login_url='users:login')
+def accept_friend_request(request, request_id):
+    user = request.user
+    payload= {}
+    if request.method == "GET":
+        # friend_request_id = kwargs.get("friend_request_id")
+        friend_request_id = request_id
+        if friend_request_id :
+            friend_request = FriendRequest.objects.get(pk=friend_request_id)
+            # Confirm that is the correct request
+            if friend_request.receiver == user:
+                if friend_request:
+                    #found the request. now accept it
+                    friend_request.accept()
+                    payload['response'] = "Friend request accepted."
+                else:
+                    payload['response'] = "something went wrong."
+            else:
+                payload['response'] = "That is not your request to accept."
+        else:
+            payload['response'] = "Unable to accept that friend request."
+    else:
+        payload['response'] = "You must be authenticated to accept a friend request."
+    
+    # return HttpResponse(json.dumps(payload), content_type="application/json")
+    return JsonResponse(payload)
+    

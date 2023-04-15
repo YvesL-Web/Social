@@ -7,7 +7,7 @@
         $.ajax({
             type:"POST",
             dataType: "json",
-            url :  "{% url 'friends:friend-request' %}",
+            url :  "{% url 'friends:send-friend-request' %}",
             timeout: 5000,
             data: payload,
             success: function(data){

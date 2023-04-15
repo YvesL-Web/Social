@@ -55,10 +55,9 @@
       </div>
     </div>
     {% if forloop.counter|divisibleby:2 %}
+    {% endif %}
+    {% endfor %} 
   </div>
-  
-  {% endif %}
-  {% endfor %} 
   {% else %}
   <div class="d-flex flex-row flex-wrap">
     <!-- If no friends -->
