@@ -45,21 +45,20 @@
       {% if request_sent == 0 %}
       <div class="card m-2 p-4">
         <div class="d-flex flex-row align-items-center">
-          <span class="friend-text align-items-center mr-2"
-            >Accept Friend Request</span
-          >
-          <span
-            id="id_cancel_{{id}}"
-            class="decline-friend-request material-icons p-1"
-            onclick='triggerDeclineFriendRequest("{{pending_friend_request_id}}")'>
-            cancel
-          </span>
-          <span
-            id="id_confirm_{{id}}"
-            class="confirm-friend-request material-icons p-1"
-            onclick='triggerAcceptFriendRequest("{{pending_friend_request_id}}")'>
-            check
-          </span>
+          <span class="friend-text align-items-center me-2">Accept Friend Request</span>
+          <button
+            id="id_decline_"
+            type="submit"
+            class="btn btn-danger rounded-pill me-2">
+            Decline
+          </button>
+          <button
+            id="id_confirm_"
+            type="submit"
+            class="btn btn-primary btn-outline-success text-white rounded-pill me-2">
+            Accept
+          </button>
+          <input type="text" id="text" value="{{pending_friend_request_id}}" hidden>
         </div>
       </div>
       {% endif %}
@@ -91,14 +90,14 @@
             class="btn btn-secondary dropdown-toggle friends-btn"
             type="button"
             id="id_friends_toggle"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false">
             Friends
           </button>
-          <div class="dropdown-menu" aria-labelledby="id_friends_toggle">
+          <div class="dropdown-menu btn btn-danger" aria-labelledby="id_friends_toggle">
             <a
-              class="dropdown-item"
+              class="dropdown-item "
               href="#"
               onclick="removeFriend('{{id}}', onFriendRemoved)"
               >Unfriend</a
@@ -110,7 +109,7 @@
         <!-- TODO -->
         <!-- Friend list link -->
         <div class="d-flex flex-column pt-4">
-          <a href="#" class="text-decoration-none">
+          <a href="{% url 'friends:friend-list' user_id=id %}" class="text-decoration-none">
             <div
               class="d-flex flex-row align-items-center justify-content-center icon-container">
               <span>
@@ -189,30 +188,38 @@
   );
   if (cancelFriendRequestBtn != null) {
     cancelFriendRequestBtn.addEventListener("click", function () {
-      //cancelFriendRequest("{{id}}", onFriendRequestCancelled)
+      cancelFriendRequest("{{id}}", onFriendRequestCancelled)
     });
   }
 
   var removeFriendBtn = document.getElementById("id_unfriend_btn");
   if (removeFriendBtn != null) {
     removeFriendBtn.addEventListener("click", function () {
-      //removeFriend("{{id}}", onFriendRemoved)
+      removeFriend("{{id}}", onFriendRemoved)
     });
   }
-
-  function triggerAcceptFriendRequest(friend_request_id) {
-    acceptFriendRequest(friend_request_id, onFriendRequestAccepted);
+  var value = document.getElementById("text").value;
+  var acceptFriendRequestBtn = document.getElementById("id_confirm_");
+  if (acceptFriendRequestBtn != null) {
+    acceptFriendRequestBtn.addEventListener("click", function (){
+      acceptFriendRequest(value, onFriendRequestAccepted);
+    });
   }
-
-  function triggerDeclineFriendRequest(friend_request_id) {
-    //declineFriendRequest(friend_request_id, onFriendRequestDeclined)
+ 
+  var declineFriendRequestBtn = document.getElementById("id_decline_");
+  if (declineFriendRequestBtn != null){
+    declineFriendRequestBtn.addEventListener("click", function(){
+      declineFriendRequest(value, onFriendRequestDeclined);
+    });
   }
+ 
 </script>
 
 {% include 'friends/scripts/send_friend_request.html' %} 
 {% include 'friends/scripts/accept_friend_request.html' %} 
-{#% include'snippets/decline_friend_request.html' %#} 
-{#% include'snippets/cancel_friend_request.html' %#}
-{#% include'snippets/remove_friend.html' %#} 
+{% include 'friends/scripts/decline_friend_request.html' %} 
+{% include 'friends/scripts/cancel_friend_request.html' %}
+{% include 'friends/scripts/remove_friend.html' %} 
 {#% include'chat/create_or_return_private_chat.html' %#}
+
 {% endblock content %}

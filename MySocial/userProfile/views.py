@@ -54,9 +54,8 @@ def profile_view(request,*args, **kwargs):
     context = {}
     user_id = kwargs.get("user_id")
     try:
-        user = User.objects.get(pk=user_id)
-       
-    except UserProfile.DoesNotExist:
+        user = User.objects.get(pk=user_id) 
+    except User.DoesNotExist:
         return HttpResponse("That user doesn't exist.")
     if user:
         context['id'] = user.id
@@ -110,7 +109,7 @@ def profile_view(request,*args, **kwargs):
         context['friend_requests'] = friend_requests
         return render(request, "userProfile/userprofile.html", context)
     
-
+@login_required(login_url='users:login')
 def profile_search_view(request, *args, **kwargs):
     context={}
     if request.method == "GET":
@@ -119,9 +118,16 @@ def profile_search_view(request, *args, **kwargs):
             search_results = User.objects.filter(username__icontains=search_query)
             user = request.user
             profiles = [] # [(profile1, True),(profile2, False)]
-            for profile in search_results:
-                profiles.append((profile, False))   
-            context['profiles'] = profiles
-            
+            if user.is_authenticated:
+                # get the authenticated users friend list
+                auth_user_friend_list = FriendsList.objects.get(user = user)
+                for profile in search_results:
+                    profiles.append((profile, auth_user_friend_list.is_mutual_friend(profile)))   
+                context['profiles'] = profiles
+            else:
+                for profile in search_results:
+                    profiles.append((profile, False))   
+                context['profiles'] = profiles
+                
             
     return render (request, "userProfile/search_result.html", context)
