@@ -10,7 +10,8 @@
           href="{% url 'userProfile:profile_view' user_id=friend.0.pk %}">
           <div class="card-image m-2">
             <img
-              class="img-fluid profile-image rounded-circle"
+              class="rounded-circle"
+              style="height: 80px; width: 80px"
               src="{{friend.0.userprofile.profile_img.url}}"
               alt="" />
           </div>
@@ -23,15 +24,14 @@
             <h4 class="card-title">{{friend.0.username|truncatechars:50}}</h4>
           </a>
           {% if friend.1 %}
-          
-            <a
-              href="#"
-              class=" btn btn-primary text-decoration-none"
-              onclick="createOrReturnPrivateChat('{{friend.0.id}}')">
-              <i class="fa-regular fa-message pe-2"></i> 
-              Send a Message
-            </a>
-          
+
+          <a
+            href="#"
+            class="btn btn-primary text-decoration-none"
+            onclick="createOrReturnPrivateChat('{{friend.0.id}}')">
+            <i class="fa-regular fa-message pe-2"></i>
+            Send a Message
+          </a>
 
           {% endif %}
         </div>
@@ -40,20 +40,24 @@
           class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
           {% if friend.1 %}
           <div class="d-flex flex-row friends-text-container p-3">
-            <p class="friends-text m-auto pe-2">Friends</p>
+            <p class="friends-text m-auto pe-2">Friend</p>
             <span class="material-icons checkmark-icon m-auto pe-2">
               <i class="fa-sharp fa-solid fa-circle-check"></i>
             </span>
           </div>
           {% else %} {% if friend.0 != request.user %}
           <div class="d-flex flex-row friends-text-container p-3">
-            <p class="friends-text m-auto">Not Friends</p>
-            <span class="material-icons cancel-icon m-auto pl-2">cancel</span>
+            <p class="friends-text m-auto me-1">Not Friend</p>
+          <span>
+            <i class="text-danger fa-solid fa-rectangle-xmark fs-4"></i>
+          </span>
           </div>
           {% endif %} {% endif %} {% if friend.0 == request.user %}
           <div class="d-flex flex-row friends-text-container p-3">
             <p class="friends-text m-auto">This is you</p>
-            <span class="material-icons m-auto pl-2"> person_pin </span>
+            <span class="material-icons m-auto ps-2"
+              ><i class="fa-solid fa-user text-primary"></i>
+            </span>
           </div>
           {% endif %}
         </div>

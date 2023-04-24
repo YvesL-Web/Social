@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 import json
 
 from users.models import User
@@ -27,7 +28,8 @@ def friend_list_view(request, *args, **kwargs):
         # Must be friends to view a friend list
         if user != this_user:
             if not user in friend_list.friends.all():
-                return HttpResponse("You must be friend to view their friends list.")
+                messages.info(request,"You must be friend to view their friends list.")
+                return redirect("userProfile:profile_view",this_user.id)
             
         friends = [] # [(User1, True), (User2, False),...]
         user_friend_list = FriendsList.objects.get(user = user)

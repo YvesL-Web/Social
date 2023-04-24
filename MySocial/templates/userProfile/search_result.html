@@ -13,7 +13,7 @@
         <div class="card-image m-2">
           <img
             class="img-fluid profile-image rounded-circle"
-            style="height:250px; width:250px; object-fit: cover;"
+            style="height: 250px; width: 250px; object-fit: cover"
             src="{{profile.0.userprofile.profile_img.url}}"
             alt="" />
         </div>
@@ -22,12 +22,16 @@
         class="profile-link text-decoration-none"
         href="{% url 'userProfile:profile_view' user_id=profile.0.id %}">
         <div class="card-center px-2">
-          <h4 class="card-title ">{{profile.0.username}}</h4>
+          <h4 class="card-title">{{profile.0.username}}</h4>
           {% if profile.1 %}
           <p class="card-text">
-            <a href="#" onclick="createOrReturnPrivateChat('{{profile.0.id}}')"
-              >Send a Message</a
-            >
+            <a
+              href="#"
+              class="btn btn-primary text-decoration-none"
+              onclick="createOrReturnPrivateChat('{{profile.0.id}}')">
+              <i class="fa-regular fa-message pe-2"></i>
+              Send a Message
+            </a>
           </p>
           {% endif %}
         </div>
@@ -37,26 +41,28 @@
         {% if profile.1 %}
         <div class="d-flex flex-row friends-text-container p-3">
           <p class="friends-text m-auto">Friends</p>
-          <span class="material-icons checkmark-icon m-auto pl-2">
-            check_circle_outline
+          <span class="material-icons checkmark-icon m-auto ps-2">
+            <i class="fa-sharp fa-solid fa-circle-check"></i>
           </span>
         </div>
         {% else %} {% if profile.0 != request.user %}
         <div class="d-flex flex-row friends-text-container p-3">
-          <p class="friends-text m-auto me-1"> Not Friends</p>
-          <span><i class="text-danger fa-solid fa-rectangle-xmark fs-4"></i></span>
+          <p class="friends-text m-auto me-1">Not Friends</p>
+          <span>
+            <i class="text-danger fa-solid fa-rectangle-xmark fs-4"></i>
+          </span>
         </div>
         {% endif %} {% endif %} {% if profile.0 == request.user %}
         <div class="d-flex flex-row friends-text-container p-3">
           <p class="friends-text m-auto">This is you</p>
-          <span class="material-icons m-auto ps-2"><i class="fa-solid fa-user text-primary"></i></span>
+          <span class="material-icons m-auto ps-2"
+            ><i class="fa-solid fa-user text-primary"></i>
+          </span>
         </div>
         {% endif %}
       </div>
     </div>
-    {% if forloop.counter|divisibleby:2 %}
-    {% endif %}
-    {% endfor %} 
+    {% if forloop.counter|divisibleby:2 %} {% endif %} {% endfor %}
   </div>
   {% else %}
   <div class="d-flex flex-row flex-wrap">

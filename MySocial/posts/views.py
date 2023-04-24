@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from chat.models import Chat
+# from chat.models import Chat
 
 from comment.models import Comment
 from comment.forms import CommentForm
@@ -22,28 +22,28 @@ def post(request):
     comment = Comment.objects.select_related('post').all()
     # messages
     user = request.user
-    chat_user = Chat.get_message(user=user)
-    active_message = None
-    messages = None
+    # chat_user = Chat.get_message(user=user)
+    # active_message = None
+    # messages = None
 
-    if chat_user:
-        message = chat_user[0]
-        active_message = message['user'].username
-        messages = Chat.objects.filter(user=user, receiver=message['user'])
-        messages.update(is_read=True)
+    # if chat_user:
+    #     message = chat_user[0]
+    #     active_message = message['user'].username
+    #     messages = Chat.objects.filter(user=user, receiver=message['user'])
+    #     messages.update(is_read=True)
 
-        for message in chat_user:
-            if message['user'].username == active_message:
-                message['unread'] = 0
+    #     for message in chat_user:
+    #         if message['user'].username == active_message:
+    #             message['unread'] = 0
     # print(chat_user)
     context = {
         # post
         'posts':posts.order_by('-created_at'),
         'comments': comment.order_by('-created_at'),
         # message
-        'chat_user': chat_user, 
-        'active_message' : active_message,
-        'user_messages' : messages,  
+        # 'chat_user': chat_user, 
+        # 'active_message' : active_message,
+        # 'user_messages' : messages,  
     }
     return render(request,'posts/index.html',context)
 
@@ -85,6 +85,7 @@ def single_post(request, id):
         'len_comment': len_comment,
         'form':form,
     }
+    
     return render(request, 'posts/post_detail.html', context)
 
 # delete_post

@@ -33,19 +33,19 @@
         </div>
       </div>
       <!--friend-->
-      {% for message in messages %}
+      {% for friend in friend_list %}
       <div
         class="friend-drawer friend-drawer--onhover bg-white rounded m-2 p-2">
-        <a href="{% url 'chat:single_chat' message.user.username %}" class="text-decoration-none text-dark">
+        <a href="{% url 'chat:single_chat' friend.id %}" class="text-decoration-none text-dark">
           <div class=" d-flex align-baseline ">
             <img
           class="profile-image rounded-circle"
-          src="{{message.user.userprofile.profile_img.url}}"
+          src="{{friend.userprofile.profile_img.url}}"
           style="width: 50px; height: 50px; object-fit: cover"
           alt="" />
             
           <div class="text ms-2" style="width: 70%">
-            <h6 class="mb-0 mt-1">{{message.user.username}}</h6>
+            <h6 class="mb-0 mt-1">{{friend.username}}</h6>
             <p class="text-muted m-0">Layin' down the law since like before Christ...</p>
           </div>
           <span class="time text-muted small">{{message.last}}</span>
