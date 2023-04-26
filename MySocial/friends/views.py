@@ -39,7 +39,6 @@ def friend_list_view(request, *args, **kwargs):
         context['friends'] = friends
     else:
         return HttpResponse("You must be friend to view their friends list.")
-    print(friends)
     return render(request, "friends/friends_list.html", context )
 
 

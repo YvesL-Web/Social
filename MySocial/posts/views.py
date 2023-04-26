@@ -17,33 +17,12 @@ from userProfile.models import UserProfile
 # Create your views here.
 @login_required(login_url='users:login')
 def post(request):
-    # user_object = User.objects.get(username=request.user.username)
     posts= Post.objects.all()
     comment = Comment.objects.select_related('post').all()
-    # messages
     user = request.user
-    # chat_user = Chat.get_message(user=user)
-    # active_message = None
-    # messages = None
-
-    # if chat_user:
-    #     message = chat_user[0]
-    #     active_message = message['user'].username
-    #     messages = Chat.objects.filter(user=user, receiver=message['user'])
-    #     messages.update(is_read=True)
-
-    #     for message in chat_user:
-    #         if message['user'].username == active_message:
-    #             message['unread'] = 0
-    # print(chat_user)
     context = {
-        # post
         'posts':posts.order_by('-created_at'),
         'comments': comment.order_by('-created_at'),
-        # message
-        # 'chat_user': chat_user, 
-        # 'active_message' : active_message,
-        # 'user_messages' : messages,  
     }
     return render(request,'posts/index.html',context)
 

@@ -64,13 +64,9 @@
           class="friend-drawer g-0 friend-drawer--grey d-flex align-baseline align-items-center rounded">
           <img
             class="profile-image rounded-circle"
-            {%
-            comment
-            %}
+            {%comment%}
             src="https://source.unsplash.com/collection/10"
-            {%
-            endcomment
-            %}
+            {% endcomment%}
             src="{{this_user.userprofile.profile_img.url}}"
             style="width: 50px; height: 50px; object-fit: cover"
             alt="" />
@@ -97,6 +93,9 @@
               <span class="time ms-4 text-muted small">{{chat.date}}</span>
             </div>
           </div>
+          <div class="msg_receive row g-0">
+
+          </div>
           {% endif %} 
         {% endfor %}
       </div>
@@ -117,21 +116,9 @@
                   id="message"
                   name="body"
                   class="form-control border-0 bg-gray rounded-pill"
-                  placeholder="write your message" />
-                <!-- the person we're sending the message -->
-                <input
-                  type="hidden"
-                  id="to_user"
-                  name="to_user"
-                  {%
-                  comment
-                  %}
-                  value="{{active_chats}}"
-                  {%
-                  endcomment
-                  %}
-                  class="form-control border-0 bg-gray rounded-pill" />
-
+                  placeholder="write your message" 
+                  required/>
+                
                 <button
                   class="ms-1 border-0 btn btn-outline-primary rounded-pill"
                   type="submit"
@@ -148,49 +135,18 @@
 </div>
 
 <script>
-  let form = document.getElementById("chat-form");
-  form.addEventListener("submit", sendMessage);
-  function sendMessage(e) {
-    e.preventDefault();
-    let _message = document.getElementById("message").value;
-    console.log(_message);
-
-    const data = {message: _message}
-    let url = "{% url 'chat:send_message' this_user.id %}"
-
-    fetch(url, {
-      method:'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error)=>{
-      console.log('Error:', error);
-    })
-  }
-</script>
-
-{% comment %}
-<script>
   $(document).on('submit', '#chat-form', function(e){
     e.preventDefault();
     let _message = $("#message").val();
-    let _to_user = $("#to_user").val();
     $.ajax({
       type:'POST',
-      url:'{% url 'chat:send_message' %}',
+      url:'{% url 'chat:send_message' this_user.id %}',
       data:{
-        message:_message,
-        to_user: _to_user,
+        body:_message,
         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
       },
-      success: function(success){
-        console.log(success)
+      success: function(data){
+        console.log(data)
         let _html =
           '<div class="row g-0">\
               <div class="col-md-3 offset-md-9">\
@@ -199,9 +155,60 @@
             </div>\
         '
         $(".chat-panel").append(_html)
+      },
+      error: function(error){
+        console.log(error)
       }
     });
     document.getElementById("message").value=""
   });
+
+  
+  setInterval(receivedMessages,5000);
+  let counter = {{nbr_msg}}
+  const msg = document.querySelector('.left-bubble')
+  console.log("counterinit:"+counter)
+  function receivedMessages(){
+    $.ajax({
+      type:'GET',
+      url:'{% url 'chat:received_message' this_user.id %}',
+      success: function(data){        
+        if (data.lenght == 0){}
+
+        else{
+
+          let last_msg = data[data.length-1]
+          console.log("counter:"+counter)
+          console.log("data:" + data.length)
+          if (counter == data.length)
+            {console.log("no new chat")}
+          else{
+            let chat_panel = document.querySelector(".chat-panel")
+
+            let div1 = document.createElement("div")
+            div1.classList.add("row","g-0")
+
+            let div2 = document.createElement('div')
+            div2.classList.add("col-md-3")
+
+            let chatMessage = document.createElement("div")
+            chatMessage.classList.add("chat-bubble","left-bubble")
+            chatMessage.innerText = last_msg
+
+            div1.appendChild(div2)
+            div2.appendChild(chatMessage)
+
+            chat_panel.appendChild(div1)
+            document.getElementById("message").value=""
+          }
+        }
+        counter = data.length
+      },
+      error: function(error){
+        console.log(error)
+      }
+    });
+  }
+
 </script>
-{% endcomment %} {% endblock content %}
+{% endblock content %}
