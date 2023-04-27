@@ -5,7 +5,7 @@ from . import views
 app_name='posts'
 
 urlpatterns = [
-    path('',views.post, name='index' ),
+    path('',views.index_page, name='index' ),
     path('upload/',views.upload, name='upload' ),
     path('single-post/<uuid:id>',views.single_post, name='single_post' ),
     path('like/',csrf_exempt(views.like_post), name='like' ),

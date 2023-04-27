@@ -27,15 +27,15 @@
       </span>
       <h3 class="fs-5 ps-2 text-dark">Home</h3>
     </a>
-    <a href="" class="menu-item text-decoration-none" id="notifications">
+    <a href="#" class="menu-item text-decoration-none" id="notifications">
       <span>
         <i class="fa-solid fa-bell text-muted fs-5">
           <small class="notification-count">9+</small>
         </i>
       </span>
-      <h3 class="fs-5 ps-2 text-dark">Notifications</h3>
+      <h3 class="fs-5 ps-2 text-dark dropdown-toggle" type="button">Notifications</h3>
       <!--notification-->
-      <div class="notifications-popup ms-3 d-none">
+      <div class="notifications-popup ms-3 d-none  ">
         <div class="d-flex align-items-start mb-4">
           <div class="profile-photo me-3">
             <img
@@ -71,7 +71,10 @@
       id="messages-notifications">
       <span>
         <i class="fa-solid fa-message text-muted fs-5">
-          <small class="notification-count">6</small>
+          {% if total_msg %}
+          <small class="notification-count">{{total_msg}}</small>
+          {% else %} 
+          {% endif %}
         </i>
       </span>
       <h3 class="fs-5 ps-2 text-dark">Messages</h3>
@@ -81,12 +84,16 @@
       class="menu-item text-decoration-none">
       <span>
         <i class="fa-solid fa-users text-muted fs-5">
-          <small class="notification-count">{{friend_requests|length}}</small>
+          {% if friend_requests %}
+            <small class="notification-count">{{friend_requests|length}}</small>
+          {% else %}
+          {% endif %}
+         
         </i>
       </span>
       <h3 class="fs-5 ps-2 text-dark">Friend Request</h3>
     </a>
-    <a href="" class="menu-item text-decoration-none">
+    <a href="#" class="menu-item text-decoration-none">
       <span><i class="fa-solid fa-palette text-muted fs-5"></i></span>
       <h3 class="fs-5 ps-2 text-dark">Theme</h3>
     </a>

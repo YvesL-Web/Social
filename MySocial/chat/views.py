@@ -9,7 +9,7 @@ from friends.models import FriendsList
 # Create your views here.
   
 @login_required(login_url='users:login')
-def index2(request):
+def index(request):
     user = request.user
     context = {}
     friend_list = FriendsList.objects.get(user = user)
@@ -20,7 +20,7 @@ def index2(request):
     return render(request, 'chat/index.html', context)
 
 @login_required(login_url='users:login')
-def single_chat2(request, *args, **kwargs):
+def single_chat(request, *args, **kwargs):
     context = {}
     user = request.user
     user_id = kwargs.get("user_id")  
@@ -54,7 +54,6 @@ def single_chat2(request, *args, **kwargs):
         nbr_msg_between_user.update(is_read=True)
         context["nbr_msg"] = nbr_msg_between_user.count()
         context["chats"] = chats
-        print(context)
     return render(request, 'chat/single_chat.html', context)
 
 @login_required(login_url='users:login')
@@ -89,17 +88,14 @@ def received_messages(request, *args, **kwargs):
 def messages_notifications(request):
     user = User.objects.get(username=request.user.username)
     arr=[]
+    
     try:
         friend_list = FriendsList.objects.get(user=user)
-        print(f"friend list of: {friend_list}")
     except FriendsList.DoesNotExist:
         return HttpResponse(f"Could not find a friends list for {user.username}")
     
     for friend in friend_list.friends.all():
         chat_messages = ChatMessage.objects.filter(sender__id=friend.id, receiver=user, is_read=False)
         arr.append(chat_messages.count())
-    
-    print(f"Message per friend: {arr}")
-
     return  JsonResponse(arr, safe=False)
 

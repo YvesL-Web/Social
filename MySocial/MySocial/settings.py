@@ -65,6 +65,7 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     "127.0.0.1",   
 ]
+
 ROOT_URLCONF = 'MySocial.urls'
 
 TEMPLATES = [
@@ -78,7 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
+                'posts.context_processors.extras',
             ],
         },
     },

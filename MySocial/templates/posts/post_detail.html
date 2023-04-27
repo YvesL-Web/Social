@@ -1,233 +1,184 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %} 
 {% include "partials/_messages.html" %}
-<div class="bg-white p-4 rounded shadow m-5">
-  <!--author-->
-  <div class="d-flex justify-content-between">
-    <!--avatar-->
-    <div class="d-flex">
-      <img
-        src="{{post.user.userprofile.profile_img.url}}"
-        alt="avatar"
-        class="rounded-circle me-2"
-        style="width: 38px; height: 38px; object-fit: cover" />
-      <div>
-        <a href="#" class="m-0 fw-bold text-dark text-decoration-none"
-          >{{post.user}}</a
-        >
-        <p class="text-muted fs-7">March 23 at 22:30</p>
-      </div>
-    </div>
-    <!--edit-->
-    {% if request.user != post.user %} {% else %}
-    <!--edit menu-->
-    <i
-      class="fa fa-ellipsis-h"
-      type="button"
-      data-bs-toggle="dropdown"
-      arial-expanded="false"
-      id="postOption"></i>
-    <ul class="dropdown-menu border-0 shadow" aria-labelledby="postOption">
-      {% comment %}
-      <li class="d-flex align-items-center">
-        <a
-          href="#"
-          data-bs-toggle="modal"
-          data-bs-target="#editModal"
-          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-          Edit Post
-        </a>
-      </li>
-      {% endcomment %}
-      <li class="d-flex align-items-center">
-        <a
-          href="{% url 'posts:delete_post' post.id %}"
-          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-          Delete Post
-        </a>
-      </li>
-    </ul>
-    {% endif %}
-  </div>
-  <!--post content-->
-  <div class="mt-3">
-    <!--content-->
-    <div>
-      <p>{{post.caption}}</p>
-      <img src="{{post.image.url}}" alt="post img" class="img-fluid" />
-    </div>
-    <!--likes & comment-->
-    <div class="position-relative mt-3 post__comment">
-      <!--likes-->
-      <div
-        class="d-flex align-items-center position-absolute top-0 start-0"
-        style="height: 50px; z-index: 5">
-        <div class="me-2">
-          <i class="fa fa-thumbs-up text-primary"></i>
-        </div>
-        <p class="m-0 text-mutedt fs-7" id="like_count">{{post.like_count}}</p>
-      </div>
-      <!--comment debut-->
-      <div class="accordion" id="accordionExample">
-        <div class="accordion-item border-0">
-          <!--comment collapse-->
-          <h2 class="accordion-header" id="headingOne">
-            <div
-              class="accordion-button collapsed d-flex justify-content-end"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseComment"
-              aria-expanded="true"
-              aria-controls="collapseComment">
-              {% if len_comment >= 2 %}
-              <p class="m-0">{{len_comment}} comments</p>
-              {% else %}
-              <p class="m-0">{{len_comment}} comment</p>
-              {% endif %}
-            </div>
-          </h2>
-          <!--comment & likes bar-->
-          <div class="d-flex justify-content-around">
-            <!--like-->
-            <button
-              class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
-              id="like-button"
-              value="{{post.id}}">
-              <i class="fa fa-thumbs-up me-3"></i>
-              {% comment %}
-              <p class="m-0">
-                <a
-                  href="like-post?post_id={{post.id}}"
-                  class="text-decoration-none text-dark"
-                  id="like-button"
-                  value="{{post.id}}"
-                  >Like</a
-                >
-              </p>
-              {% endcomment %}
-              <p class="m-0">like</p>
-            </button>
-          </div>
-          <!--comment expand-->
-          <div
-            id="collapseComment"
-            class="accordion-collapse collapse show"
-            aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <!--comment-->
-              {% for comment in comments %}
-              <div class="d-flex align-items-center my-1">
-                <!--avatar-->
-                <img
-                  src="{{comment.user.userprofile.profile_img.url}}"
-                  alt="avatar"
-                  class="rounded-circle me-2"
-                  style="width: 38px; height: 38px; object-fit: cover" />
-                <!--comment text-->
-                <div class="p-3 rounded w-100 comment__input">
-                  <!--menu-->
-                  {% if request.user != comment.user %} {% else %}
-                  <div class="d-flex justify-content-end">
-                    <i
-                      class="fa fa-ellipsis-h"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"></i>
 
-                    <ul
-                      class="dropdown-menu border-0 shadow"
-                      aria-labelledby="postOption">
-                      <li class="d-flex align-items-center">
-                        <a
-                          href="#"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editModal{{comment.id}}"
-                          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-                          Edit Comment
-                        </a>
-                      </li>
-                      <li class="d-flex align-items-center">
-                        <a
-                          href="{% url 'posts:delete_comment' comment.id %}"
-                          class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-                          Delete Comment
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  {% endif %}
-                  <!--Edit Modal-->
-                  <form
-                    action="{% url 'posts:edit_comment' comment.id %}"
-                    method="POST">
-                    {% csrf_token %}
-                    <div
-                      class="modal fade"
-                      id="editModal{{comment.id}}"
-                      tabindex="-1"
-                      aria-labelledby="editModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="editModalLabel">
-                              Edit Comment
-                            </h1>
-                            <button
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">{{form.body}}</div>
-                          <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">
-                              Update
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                  <!--text-->
-                  <p class="fw-bold m-0">{{comment.user}}</p>
-                  <p class="text-muted fs-7">{{comment.created_at}}</p>
-                  <p class="m-0 fs-7 bg-gray p-2 rounded-pill">
-                    {{comment.body}}
-                  </p>
+
+<div class="feeds my-4">
+  <div class="feed bg-white rounded m-2 p-2">
+    <div class="head d-flex justify-content-between">
+      <div class="user d-flex gap-2">
+        <div class="profile-photo">
+          <img
+            src="{{post.user.userprofile.profile_img.url}}"
+            class="rounded-circle"
+            style="width: 50px; height: 50px; object-fit: cover"
+            alt="" />
+        </div>
+        <div class="ingo">
+          <h3 class="fs-7">{{post.user}}</h3>
+          <small>{{post.created_at}}</small>
+        </div>
+      </div>
+      {% if request.user != post.user %} {% else %}
+      <div class="dropdown">
+        <span
+          class="edit"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fa-solid fa-ellipsis"></i>
+        </span>
+        <ul class="dropdown-menu rounded">
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="fa-solid fa-pen-to-square text-info"></i> Edit
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              href="{% url 'posts:delete_post' post.id %}">
+              <i class="fa-solid fa-trash text-danger"></i> Delete
+            </a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+    <div class="photo rounded overflow-hidden my-1 mx-0">
+      <img
+        src="{{post.image.url}}"
+        style="height: 700px; width: 1200px; object-fit: cover"
+        alt="" />
+    </div>
+    <!-- icon -->
+    <div
+      class="action-button d-flex justify-content-between align-items-center fs-4 m-2">
+      <div class="interaction-button">
+        <button type="button" class="border border-none bg-white" id="like-button" value="{{post.id}}">
+          <i class="fa-regular fa-heart text-danger"></i>
+        </button>
+        <span id="like_count">{{post.like_count}}</span>
+        <span>
+          <i class="fa-brands fa-rocketchat"></i>
+          {% if len_comment >= 2 %}
+            {{len_comment}} comments
+          {% else %}
+            {{len_comment}} comment
+          {% endif %}
+        </span>
+      </div>
+      <div class="bookmark">
+        <span><i class="fa-regular fa-bookmark"></i></span>
+      </div>
+    </div>
+    <!-- person who like the post -->
+   
+    <div class="caption">
+      <p><b>@{{post.user}}</b> <span class="fs-5">{{post.caption}}</span></p>
+    </div>
+
+    <!-- Comment Section-->
+    <div>
+      {% for comment in comments %}
+      <div class="d-flex flex-start mt-4">
+        <a class="me-3" href="#">
+          <img
+            class="rounded-circle shadow-1-strong"
+            src="{{comment.user.userprofile.profile_img.url}}"
+            alt="avatar"
+            width="65"
+            height="65" />
+        </a>
+        <div class="flex-grow-1 flex-shrink-1">
+          <div>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="mb-1">
+                <b>{{comment.user.username}} </b
+                ><span class="small">{{comment.created_at}}</span>
+              </p>
+            </div>
+            <p class="small mb-0">{{comment.body}}</p>
+          </div>
+        </div>
+        {% if request.user != comment.user %} {% else %}
+        <div class="d-flex justify-content-end">
+          <i
+            class="fa fa-ellipsis-h"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"></i>
+
+          <ul
+            class="dropdown-menu border-0 shadow"
+            aria-labelledby="postOption">
+            <li class="d-flex align-items-center">
+              <a
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal{{comment.id}}"
+                class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                Edit Comment
+              </a>
+            </li>
+            <li class="d-flex align-items-center">
+              <a
+                href="{% url 'posts:delete_comment' comment.id %}"
+                class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                Delete Comment
+              </a>
+            </li>
+          </ul>
+        </div>
+        {% endif %}
+        <!--Edit Modal-->
+        <form action="{% url 'posts:edit_comment' comment.id %}" method="POST">
+          {% csrf_token %}
+          <div
+            class="modal fade"
+            id="editModal{{comment.id}}"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title" id="editModalLabel">Edit Comment</h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  {{form.body}}
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Update</button>
                 </div>
               </div>
-              {% endfor %}
-
-              <!--create comment-->
-              <form class="d-flex my-1" method="POST">
-                {% csrf_token %}
-                <!--avatar-->
-                <div>
-                  <img
-                    src="{{user_profile.profile_img.url}}"
-                    alt="avatar"
-                    class="rounded-circle me-2"
-                    style="width: 38px; height: 38px; object-fit: cover" />
-                </div>
-                <!--input-->
-                {% comment %}
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control border-0 rounded-pill bg-gray"
-                  placeholder="Write a comment" />
-                {% endcomment %} {{form.body}}
-              </form>
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <!--end accordion-->
+      {% endfor %}
     </div>
+
+    <!-- ajouter un commentaire-->
+    <form class="d-flex mt-5" method="POST">
+      {% csrf_token %}
+      <!--avatar-->
+      <div>
+        <img
+          src="{{user_profile.profile_img.url}}"
+          alt="avatar"
+          class="rounded-circle me-2"
+          style="width: 38px; height: 38px; object-fit: cover" />
+      </div>
+      {{form.body}}
+    </form>
   </div>
 </div>
+
 <script>
   $(document).on('click','#like-button', function(e){
     e.preventDefault();
@@ -243,7 +194,7 @@
         document.getElementById("like_count").innerHTML = json['result']
       }
     });
-     document.getElementById("message").value=""
+
   })
 </script>
 {% endblock content %}

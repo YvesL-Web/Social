@@ -2,8 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import HttpResponseRedirect, JsonResponse
-from django.urls import reverse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 # from chat.models import Chat
 
 from comment.models import Comment
@@ -11,20 +10,42 @@ from comment.forms import CommentForm
 from users.models import User
 from .models import Post
 from userProfile.models import UserProfile
+from friends.models import FriendRequest, FriendsList
+from chat.models import ChatMessage
 # User = get_user_model()
 
 
 # Create your views here.
 @login_required(login_url='users:login')
-def post(request):
+def index_page(request):
+    context={}
     posts= Post.objects.all()
-    comment = Comment.objects.select_related('post').all()
-    user = request.user
+    
     context = {
-        'posts':posts.order_by('-created_at'),
-        'comments': comment.order_by('-created_at'),
+        'posts':posts.order_by('-created_at'),  
     }
+   
     return render(request,'posts/index.html',context)
+
+
+def messages_notifications(request):
+    user = User.objects.get(username=request.user.username)
+    arr=[]
+    try:
+        friend_list = FriendsList.objects.get(user=user)
+        print(f"friend list of: {friend_list}")
+    except FriendsList.DoesNotExist:
+        return HttpResponse(f"Could not find a friends list for {user.username}")
+    
+    for friend in friend_list.friends.all():
+        chat_messages = ChatMessage.objects.filter(sender__id=friend.id, receiver=user, is_read=False)
+        arr.append(chat_messages.count())
+    
+    print(f"Message per friend: {arr}")
+
+    return  JsonResponse(arr, safe=False)
+
+
 
 @login_required(login_url='users:login')
 def upload(request):
@@ -129,25 +150,5 @@ def like_post(request):
             post.save()
 
         return JsonResponse({'result':result})
-
-
-# @login_required(login_url='users:login')
-# def like_post(request, post_id):
-#     user = User.objects.get(username=request.user.username)
-#     # post_id = request.GET.get('post_id')
-#     post=Post.objects.get(id=post_id)
-#     current_likes = post.likes
-#     liked = Likes.objects.filter(user=user.username, post=post).count()
-#     if not liked:
-#         liked  = Likes.objects.create(user=user, post=post)
-#         current_likes +=1
-#     else:
-#         liked  = Likes.objects.filter(user=user, post=post).delete()
-#         current_likes -=1
-#     post.likes = current_likes
-#     post.save()
-#     return HttpResponseRedirect(reverse('index'))
-
-
 
 
