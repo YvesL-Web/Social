@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
 INTERNAL_IPS = [
     "127.0.0.1",   
 ]
@@ -87,9 +88,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MySocial.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+
 
 DATABASES = {
     'default': {

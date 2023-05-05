@@ -1,6 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
 from django.utils import timezone
 from users.models import User
+from django.db.models.signals import post_save
 
 # Create your models here.
 class FriendsList(models.Model):
@@ -74,3 +76,8 @@ class FriendRequest(models.Model):
         self.is_active = False
         self.save()
         
+# Signal
+@receiver(post_save, sender=User)
+def create_friend_list(sender, instance, created, **kwargs):
+    if created:
+        FriendsList.objects.create(user=instance)

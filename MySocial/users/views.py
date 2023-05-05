@@ -31,13 +31,14 @@ def register(request):
                 
                 messages.success(request,'Account Successfully created')
                 new_user = form.save()
-                
-                # create a profile object for the new user
-                username = form.cleaned_data.get('username')
-                user_model = User.objects.get(username=username)
-                new_profile = UserProfile.objects.create(user=user_model )
-                new_profile.save()
                 return redirect('users:login') 
+            
+                # create a profile object for the new user
+                # username = form.cleaned_data.get('username')
+                # user_model = User.objects.get(username=username)
+                # new_profile = UserProfile.objects.create(user=user_model )
+                # new_profile.save()
+                # return redirect('users:login') 
             else:
                 messages.error(request, 'That email is being used!')
                 return redirect('users:register')
@@ -54,7 +55,6 @@ def register(request):
 
 
 def login_view(request):
-
     if request.user.is_authenticated:
         return redirect("posts:index")
     

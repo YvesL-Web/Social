@@ -1,6 +1,7 @@
 from django.db import models
+from django.dispatch import receiver
 from users.models import User
-
+from django.db.models.signals import post_save
 # Create your models here.
 
 def user_director_path(instance, filename):
@@ -16,3 +17,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+# Signal 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, *args, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)

@@ -1,0 +1,68 @@
+{% extends 'base_chat.html' %}
+
+{% block content %}
+<style type="text/css">
+
+</style>
+
+<div class="container">
+	<div class="d-flex flex-column">
+		<div class="d-flex chat-log">
+			
+		</div>
+
+		<div class="d-flex chat-message-input-container">
+			<textarea class="flex-grow-1 chat-message-input" id="id_chat_message_input"></textarea>
+
+			<button class="btn btn-primary chat-message-submit-button">
+				<span id="id_chat_message_submit" class="material-icons">send
+				</span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function setupPublicChatWebSocket(){
+	//ws:// or wss://
+	var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+	{% if debug_mode%}
+		var ws_path = ws_scheme + "://" + window.location.host + "/public_chat/{{room_id}}/"// development
+	{% else %}
+		var ws_path = ws_scheme + "://" + window.location.host + ":8001/public_chat/{{room_id}}/" //production
+	{% endif %}
+
+	var public_chat_socket = new WebSocket(ws_path)
+
+	// handle incoming messages
+	public_chat_socket.onmessage = function(message){
+		console.log("Got chat websocket message: " + message.data)
+	}
+
+	public_chat_socket.addEventListener("open", function(e){
+		console.log("public chat socket open")
+	})
+
+	public_chat_socket.onclose = function(e){
+		console.log("public chat socket closed. ")
+	}
+
+	public_chat_socket.onopen = function(e){
+		console.log("public chat socket: OnOpen. ")
+	}
+	
+	public_chat_socket.onerror = function(e){
+		console.log("public chat socket error: " + str(e))
+	}
+
+	if(public_chat_socket.readyState == WebSocket.OPEN){
+		console.log("public chat socket open")
+	}
+	else if(public_chat_socket.readyState == WebSocket.CONNECTING){
+		console.log("public chat socket Connecting...")
+	}
+	
+}
+</script>
+
+{% endblock %}
