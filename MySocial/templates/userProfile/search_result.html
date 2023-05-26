@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
 
 <style type="text/css"></style>
 
@@ -62,7 +64,9 @@
         {% endif %}
       </div>
     </div>
-    {% if forloop.counter|divisibleby:2 %} {% endif %} {% endfor %}
+    {% if forloop.counter|divisibleby:2 %}
+    {% endif %} 
+    {% endfor %}
   </div>
   {% else %}
   <div class="d-flex flex-row flex-wrap">
