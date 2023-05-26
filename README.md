@@ -1,5 +1,13 @@
 # Social
 django project
+Just a simple social media where you can :
+- Create an account
+- Post pictures
+- Comment Pictures
+- Like pictures
+- Add friend
+- Chat with your friend
+
 # Backend
 - django
 - python
@@ -9,6 +17,7 @@ django project
 - CSS
 - JavaScript
 - ajax
+ 
 
 ## Screenshots
 ### Login
